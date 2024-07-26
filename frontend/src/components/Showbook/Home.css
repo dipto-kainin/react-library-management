@@ -1,0 +1,55 @@
+.home{
+    width: 90vw;
+    height: 70vh;
+    display: flex;
+    margin: auto;
+}
+.card {
+    width: 40%;
+    margin: auto;
+    height: 60vh;
+    border-radius: 4px;
+    background:  rgba(0, 0, 0, 0.5);
+    gap: 2px;
+    padding: .4em;
+}
+
+.card p {
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    overflow: auto;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all .5s;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ff5a91;
+}
+.card p::-webkit-scrollbar {
+    width: 0 !important
+}
+.card p:hover {
+    flex: 3;
+    overflow-y:auto;
+}
+
+.card p span {
+    min-width: 14em;
+    padding: .5em;
+    text-align: center;
+    transition: all .5s;
+    color: #ff568e;
+    letter-spacing: .1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.card p span img{
+    margin-bottom: 1em;
+    transform: rotate(35deg);
+    transition: transform .5s;
+}
+.card p:hover span img{
+    transform: rotate(0);
+}

@@ -1,0 +1,139 @@
+.UserInfo .form-boxR {
+    position: relative;
+    overflow: auto;
+    gap: 1px;
+    width: 90vh;
+    height: auto;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 20px;
+    backdrop-filter: blur(15px) brightness(80%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1em;
+    margin: auto;
+}
+
+.UserInfo .Register {
+    color: #fff;
+    text-align: center;
+}
+
+.UserInfo .Register h2 {
+    font-size: 2em;
+}
+
+.UserInfo .Register .inputbox {
+    position: relative;
+    margin: 30px 0;
+    width: 400px;
+    border-bottom: 2px solid #fff;
+}
+
+.UserInfo .Register .inputbox label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1em;
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.UserInfo .Register input:focus~label,
+.UserInfo .Register input:valid~label {
+    top: -5px;
+    transition: ease-in;
+}
+
+.UserInfo .Register .inputbox input {
+    width: 100%;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    padding: 0 35px 0 5px;
+    color: #fff;
+}
+
+.UserInfo .Register .inputbox ion-icon {
+    position: absolute;
+    right: 8px;
+    color: #fff;
+    font-size: 1.2em;
+    top: 20px;
+}
+
+.UserInfo .Register .Btn {
+    width: 100%;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: 1em;
+    color: #000;
+}
+
+.UserInfo .error {
+    color: red;
+    margin-bottom: 10px;
+}
+.UserInfo .CheckBox{
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+}
+.UserInfo .CheckBox .switch {
+    position: relative;
+    height: 1.5rem;
+    width: 3rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 9999px;
+    background-color: rgba(100, 116, 139, 0.377);
+    transition: all .3s ease;
+}
+.UserInfo .CheckBox .switch:checked {
+    background-color: rgba(77, 175, 80, 1);
+}
+.UserInfo .CheckBox  .switch::before {
+    position: absolute;
+    content: "";
+    left: calc(1.5rem - 1.6rem);
+    top: calc(1.5rem - 1.6rem);
+    display: block;
+    height: 1.6rem;
+    width: 1.6rem;
+    cursor: pointer;
+    border: 1px solid rgba(100, 116, 139, 0.527);
+    border-radius: 9999px;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 3px 10px rgba(100, 116, 139, 0.327);
+    transition: all .3s ease;
+}
+.UserInfo .CheckBox .switch:hover::before {
+    box-shadow: 0 0 0px 8px rgba(0, 0, 0, .15)
+}
+.UserInfo .CheckBox .switch:checked:hover::before {
+    box-shadow: 0 0 0px 8px rgba(77, 175, 80, .15)
+}
+.UserInfo .CheckBox .switch:checked:before {
+    transform: translateX(100%);
+    border-color: rgba(77, 175, 80, 1);
+}
+
+@media screen and (max-width: 500px) {
+    .UserInfo .form-boxR {
+        width: 100%;
+        border-radius: 0px;
+    }
+}

@@ -1,0 +1,113 @@
+.appli-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.appli-list .cards {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.appli-list .cards .red {
+    background-color: #5E35B1;
+}
+
+.appli-list .cards .card {
+    padding: 0px 50px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    text-align: center;
+    gap: 30px;
+    height: 70px;
+    width: 1000px;
+    border-radius: 50px;
+    color: white;
+    cursor: pointer;
+    transition: 400ms transform, 400ms box-shadow, 400ms background-color;
+    box-shadow: 0 0 20px #FFFDE7;
+    align-items: center;
+}
+
+.appli-list .cards .card p.tip {
+    font-size: 1em;
+    font-weight: 700;
+}
+
+.appli-list .cards .card p.second-text {
+    font-size: 0.7em;
+}
+
+.appli-list .cards .card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(107, 212, 218, 0.764);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #a40df5;
+}
+
+.appli-list .cards:hover> .card:not(:hover) {
+    filter: blur(10px);
+    transform: scale(0.9);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.appli-list img {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+}
+
+.appli-list .but-group {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 25px;
+}
+
+.appli-list .but-group button {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 500;
+    color: #ffffff80;
+    text-shadow: none;
+    background: transparent;
+    cursor: pointer;
+    box-shadow: transparent;
+    border: 1px solid #ffffff80;
+    transition: 0.5s ease;
+    user-select: none;
+}
+
+.appli-list .but-group #btn-red {
+    color: red;
+    border: 1px solid red;
+}
+
+.appli-list .but-group #btn-red:hover {
+    color: #ffffff;
+    background: #D32F2F;
+    border: 1px solid #D32F2F;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+    box-shadow: 0 0 5px #F06292, 0 0 20px #F06292, 0 0 50px #F06292, 0 0 100px #F06292;
+}
+
+.appli-list .but-group #btn-green {
+    color: #8BC34A;
+    border: 1px solid #8BC34A;
+}
+
+.appli-list .but-group #btn-green:hover {
+    color: #ffffff;
+    background: #43A047;
+    border: 1px solid #43A047;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
+    box-shadow: 0 0 5px #66BB6A, 0 0 20px #66BB6A, 0 0 50px #66BB6A, 0 0 100px #66BB6A;
+}
