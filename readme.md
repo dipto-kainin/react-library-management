@@ -1,196 +1,110 @@
+# React Library Management
 
-# Library Management System
+This project is a full-stack web application designed to manage a library's inventory of books. It allows users to browse, borrow, and return books, and administrators to manage the library's collection and users. The project is built using React for the frontend and Node.js with Express for the backend. MongoDB is used as the database, and Firebase handles authentication.
 
 ## Table of Contents
-
-- [Library Management System](#library-management-system)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Features](#features)
-  - [Tech Stack](#tech-stack)
-    - [Prerequisites](#prerequisites)
-  - [Directory Structure](#directory-structure)
-  - [API Endpoints](#api-endpoints)
-    - [User Routes](#user-routes)
-      - [Register User](#register-user)
-      - [Login User](#login-user)
-      - [Get User Details (Protected)](#get-user-details-protected)
-    - [Book Routes](#book-routes)
-      - [Add Book (Admin)](#add-book-admin)
-      - [Get All Books](#get-all-books)
-      - [Get Book Details](#get-book-details)
-      - [Update Book (Admin)](#update-book-admin)
-      - [Delete Book (Admin)](#delete-book-admin)
-    - [Borrow/Return Book Routes](#borrowreturn-book-routes)
-      - [Borrow Book](#borrow-book)
-      - [Return Book](#return-book)
-  - [Usage](#usage)
-    - [User Registration](#user-registration)
-    - [User Login](#user-login)
-    - [Viewing Books](#viewing-books)
-    - [Borrowing a Book](#borrowing-a-book)
-    - [Returning a Book](#returning-a-book)
-
-## Introduction
-
-The Library Management System is a web application built using the MERN stack (MongoDB, Express.js, React.js, Node.js) to manage library operations such as book cataloging, user authentication, and book borrowing/returning.
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Endpoints](#api-endpoints)
+- [Technologies Used](#technologies-used)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
-
-- User registration and authentication
-- Book catalog management
+- User authentication (sign up, sign in, sign out) using Firebase
+- Role-based access control for users and administrators
+- Book inventory management (CRUD operations)
 - Borrowing and returning books
-- User dashboard to view borrowed books
-- Admin functionalities for managing books and users
+- Viewing borrowed book history
+- Search functionality for books by title, author, and genre
 
-## Tech Stack
+## Project Structure
+The project is divided into two main parts: the frontend and the backend.
 
-- **Frontend**: React.js
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB
-- **Authentication**: JWT (JSON Web Tokens)
+### Frontend
+Located in the `frontend` directory, this part of the project is built with React and includes the following:
+- Components: Reusable UI elements like Navbar, Book Cards, etc.
+- Pages: Different views such as Home, SignIn, SignUp, and Admin Portal.
+- Context: State management using React Context API for user and book states.
+- Styles: CSS files for styling components.
 
-### Prerequisites
+### Backend
+Located in the `backend` directory, this part of the project is built with Node.js and Express and includes the following:
+- Routes: Defines the API endpoints for books and users.
+- Controllers: Contains the logic for handling requests and responses.
+- Models: Defines the data schema for MongoDB using Mongoose.
+- Middleware: Functions for authentication and error handling.
+- Utilities: Helper functions such as token generation and email sending.
 
-- Node.js and npm
-- MongoDB
+## Installation
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/dipto-kainin/react-library-management
+    ```
 
-## Directory Structure
+2. Install dependencies for both frontend and backend:
+    ```bash
+    //for backend
+    npm install
+    ```
+    ```bash
+    //for frontend
+    cd ../frontend
+    npm install
+    ```
 
-```plaintext
-library-management-system/
-│
-├── backend/
-│   ├── models/
-│   │   ├── Book.js
-│   │   └── User.js
-│   ├── routes/
-│   │   ├── books.js
-│   │   └── users.js
-│   ├── controllers/
-│   ├── server.js
-│   └── .env
-│
-├── client/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Register.js
-│   │   │   ├── Login.js
-│   │   │   ├── BookList.js
-│   │   │   ├── UserDashboard.js
-│   │   │   └── Home.js
-│   │   ├── App.js
-│   │   └── index.js
-│   ├── public/
-│   └── package.json
-│
-├── .gitignore
-├── README.md
-└── package.json
-```
+3. Set up environment variables:
+   - Create a `.env` file in the `root` directory with the following variables:
+     ```
+      PORT 
+      MONGO_URI
+      JWT_SECRET
+      JWT_EXPIRES_IN 
+      MAIL
+      PASSWORD
+      firebaseAPI
+      firebaseProjectID
+      firebaseMessagingSenderID
+    ```
+## Usage
+1. Start the backend server:
+    ```bash
+    npm start
+    ```
+
+2. Start the frontend development server:
+    ```bash
+    cd frontend
+    npm start
+    ```
+
+3. Open your browser and navigate to `http://localhost:3000` to use the application.
 
 ## API Endpoints
-
 ### User Routes
-
-#### Register User
-
-- **Path**: `/api/users/register`
-- **Method**: POST
-- **Request Body**: `{ username, password }`
-- **Response**: User data or error message.
-
-#### Login User
-
-- **Path**: `/api/users/login`
-- **Method**: POST
-- **Request Body**: `{ username, password }`
-- **Response**: JWT token or error message.
-
-#### Get User Details (Protected)
-
-- **Path**: `/api/users/:id`
-- **Method**: GET
-- **Headers**: `{ Authorization: Bearer <token> }`
-- **Response**: User data or error message.
+- `POST /api/users/signup`: Register a new user
+- `POST /api/users/signin`: Authenticate a user
+- `GET /api/users/profile`: Get user profile (protected)
+- `PUT /api/users/profile`: Update user profile (protected)
+- ...and many more
 
 ### Book Routes
+- `GET /api/books`: Get all books
+- `POST /api/books`: Add a new book (admin)
+- `GET /api/books/:id`: Get a book by ID
+- `PUT /api/books/:id`: Update a book by ID (admin)
+- `DELETE /api/books/:id`: Delete a book by ID (admin)
+- ...and many more
 
-#### Add Book (Admin)
+## Technologies Used
+- **Frontend**: React, React Router, Context API
+- **Backend**: Node.js, Express, Mongoose
+- **Database**: MongoDB
+- **Authentication**: Firebase
+- **Others**: JWT, CSS
 
-- **Path**: `/api/books`
-- **Method**: POST
-- **Request Body**: `{ title, author, isbn, available }`
-- **Response**: Book data or error message.
+## Contributing
+Contributions are welcome! Please create an issue or submit a pull request for any enhancements or bug fixes.
 
-#### Get All Books
-
-- **Path**: `/api/books`
-- **Method**: GET
-- **Response**: Array of book data or error message.
-
-#### Get Book Details
-
-- **Path**: `/api/books/:id`
-- **Method**: GET
-- **Response**: Book data or error message.
-
-#### Update Book (Admin)
-
-- **Path**: `/api/books/:id`
-- **Method**: PUT
-- **Request Body**: `{ title, author, isbn, available }`
-- **Response**: Updated book data or error message.
-
-#### Delete Book (Admin)
-
-- **Path**: `/api/books/:id`
-- **Method**: DELETE
-- **Response**: Success message or error message.
-
-### Borrow/Return Book Routes
-
-#### Borrow Book
-
-- **Path**: `/api/books/:id/borrow`
-- **Method**: POST
-- **Headers**: `{ Authorization: Bearer <token> }`
-- **Response**: Success message or error message.
-
-#### Return Book
-
-- **Path**: `/api/books/:id/return`
-- **Method**: POST
-- **Headers**: `{ Authorization: Bearer <token> }`
-- **Response**: Success message or error message.
-
-## Usage
-
-### User Registration
-
-1. Navigate to the `/register` page.
-2. Fill in the registration form with a username and password.
-3. Submit the form to create a new account.
-
-### User Login
-
-1. Navigate to the `/login` page.
-2. Fill in the login form with your username and password.
-3. Submit the form to log in and receive a JWT token.
-
-### Viewing Books
-
-1. Navigate to the `/books` page.
-2. Browse the list of available books.
-
-### Borrowing a Book
-
-1. Ensure you are logged in.
-2. Navigate to the `/books/:id` page of the book you wish to borrow.
-3. Click the "Borrow" button to borrow the book.
-
-### Returning a Book
-
-1. Ensure you are logged in.
-2. Navigate to your user dashboard at `/dashboard`.
-3. Click the "Return" button next to the book you wish to return.
