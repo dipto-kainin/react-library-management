@@ -265,7 +265,7 @@ const borrowReqAccept = expressAsyncHandler(async(req,res)=>{
         });
     }
     else{
-        res.status(401).send("You are not authorized to view this page");
+        res.status(401).json({message:"You are not authorized to view this page"});
     }
 });
 //done by dipto
@@ -314,7 +314,6 @@ const returnReqCancel = expressAsyncHandler(async(req,res)=>{
 //done by dipto
 const returnReqList = expressAsyncHandler(async (req, res) => {
     if (req.user.role === "Admin") {
-        console.log("hi");
         const books = await Book.find({ returnReq: { $not: { $size: 0 } } })
             .select("-isbn -borrowReq")
             .populate('returnReq', '_id email');
@@ -373,41 +372,6 @@ const returnBook = expressAsyncHandler(async(req,res)=>{
     }
     else{
         res.status(401).send("You are not authorized to view this page");
-    }
-});
-//test
-const search=expressAsyncHandler(async(req, res) =>{
-    try {
-        const {searchitem} = req.params;
-        console.log(searchitem)
-        const keywords ={
-            $or: [
-                { name: { $regex: searchitem, $options: "i" } },
-                { email: { $regex: searchitem} }
-            ]
-        }
-        const user = await User.findOne(keywords).select("-password");
-        if(!user){
-            return res.status(404).json({error :"User not found"})
-        }
-        console.log(user);
-        const userBorrowed=user.borrowedBook;
-        console.log(userBorrowed);
-        if (!Array.isArray(userBorrowed) || userBorrowed.length === 0) {
-            return res.status(200).json({ message: "No books borrowed yet!" });}
-        const borrowedBooks=await Promise.all(userBorrowed.map(async(isbnid)=>{
-            const isbnPre = isbnid.split("-")[0];
-            const book = await Book.find({ isbnPre }).select("-isbn -borrowReq -returnReq");
-            return res.send({data:user, borrwedBooks: book});
-        }));
-        // const bookisbn=user.borrowedBook;
-        // console.log(bookisbn);
-        // const isbnPre=bookisbn.split("-");
-        //return res.send({data:user, borrwedBooks: book})
-}
-    catch (error) {
-        console.log(error);
-        res.send({mas:"Some problem occured"})
     }
 });
 module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,search};
