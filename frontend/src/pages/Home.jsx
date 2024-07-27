@@ -5,7 +5,7 @@ import axios from 'axios';
 import { BookContext } from '../context/bookContext';
 const Home = () => {
     const { pageNo } = useParams();
-    const {setBooks} = useContext(BookContext);
+    const {setBooks} = useContext(BookContext); 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
