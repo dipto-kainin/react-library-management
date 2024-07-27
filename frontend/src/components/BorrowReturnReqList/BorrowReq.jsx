@@ -27,18 +27,18 @@ function BorrowBookReqList() {
     const handelCancel =async (index)=>{
         try {
             const isbnPre=books[index].isbnPre;
-            const email = books[index].borrowReq.email;
+            const userid = books[index].borrowReq.userId;
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${user.token}`
                 },
             };
-            const {data}=await axios.post("api/book/borrowReqAccept",{isbnPre,email},config);
+            const {data}=await axios.post("api/book/borrowReqCancel",{isbnPre,userid},config);
             alert(data.message);
-            } catch (error) {
-                alert(error.message);
-            }
+        } catch (error) {
+            alert(error.message);
+        }
     }
 
     useEffect(() => {

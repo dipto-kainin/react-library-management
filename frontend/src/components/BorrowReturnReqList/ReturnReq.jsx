@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast, Center } from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
-
+import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 
@@ -13,6 +13,7 @@ const UserBorrowed = () => {
     const [loading, setLoading] = useState(true);
     const [hasFetched, setHasFetched] = useState(false);
     const toast = useToast();
+    const nav = useNavigate();
 
     useEffect(() => {
         async function fetchReturnReqList() {
@@ -43,6 +44,22 @@ const UserBorrowed = () => {
         if (!hasFetched)
             fetchReturnReqList();
     });
+    const handleReqAccept=(email,isbnPre)=>{
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+        const { data } = axios.post(`/api/book/returnBook`,{email,isbnPre},config);
+        if (data.message==="Book returned successfully") {
+            alert("User has borrowed the book for: "+data.returned+" days");
+            nav("/home/");
+        }
+        else{
+            alert(data.message);
+        }
+    }
 
     return (
         <>
@@ -89,8 +106,8 @@ const UserBorrowed = () => {
 
                                         <Td class="tick-cross">
                                             <div className="but-group">
-                                                <div><button id="btn-green">Accept</button></div>
-                                                <div><button id="btn-red">Cancel</button></div>
+                                                <div><button id="btn-green" onClick={()=>handleReqAccept(book.returnReq.email,book.isbnPre)}>Accept</button></div>
+                                                <div><button id="btn-red" onClick={""}>Cancel</button></div>
                                             </div>
                                         </Td>
                                     </Tr>

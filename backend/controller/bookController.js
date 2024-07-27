@@ -215,6 +215,7 @@ const borrowReqList = expressAsyncHandler(async (req, res) => {
 //done by dipto
 const borrowReqCancel = expressAsyncHandler(async(req,res)=>{
     if(req.user.role==="Admin"){
+        try{
         const {isbnPre,userid}=req.body;
         const book=await Book.findOne({isbnPre});
         if(!book){
@@ -227,6 +228,12 @@ const borrowReqCancel = expressAsyncHandler(async(req,res)=>{
         res.status(200).json({
             message: "Borrow request cancelled successfully"
         });
+        }catch(err)
+        {
+            res.status(500).json({
+                message: "Error cancelling borrow request"
+                });
+        }
     }
     else{
         res.status(401).send("You are not authorized to view this page");
