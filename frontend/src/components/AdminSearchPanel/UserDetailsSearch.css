@@ -1,0 +1,185 @@
+.userSearchAdmin .card {
+    position: relative;
+    width: 800px;
+    height: 500px;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  
+  /* .userSearchAdmin .card::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100% );
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(20px);
+  } */
+  
+  .userSearchAdmin .heading {
+    font-size: 20px;
+    text-transform: capitalize;
+    font-weight: 700;
+  }
+  
+  /* .userSearchAdmin .card p:not(.heading) {
+    font-size: 20px;
+  } */
+  
+  .userSearchAdmin .card .userparagraph{
+    /* color: #e81cff; */
+    color: aquamarine;
+    font-weight: 600;
+    text-align: justify;
+  }
+  
+  /* .userSearchAdmin .card:hover::after {
+    filter: blur(30px);
+  }
+  
+  .userSearchAdmin .card:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+  } */
+  
+
+
+ .userSearchAdmin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(100px);
+    opacity: 0.8;
+    overflow-y: auto;
+  }  
+  .userSearchAdmin::-webkit-scrollbar { width: 0 !important }
+
+  .userSearchAdmin .inputBox_container {
+    display: flex;
+    max-width: 100em;
+    width: 100%;
+    height: 40px;
+    background-color: #5c6370;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  
+ .userSearchAdmin .searchbtn
+{
+  width: 70px;
+  height: 40px;
+  border-radius: 50px;
+  margin: 1px 10px 5px 10px;
+  background-color: #c5cddd;
+}
+  
+.userSearchAdmin span
+{
+  color: white;
+}
+
+.userSearchAdmin .searchandbtn{
+  display: flex;
+}
+
+  .userSearchAdmin .inputBox {
+    background-color: transparent;
+    color: #ffffff;
+    outline: none;
+    width: 100%;
+    border: 0;
+    padding: 0.5em 1.5em 0.5em 0;
+    font-size: 1em;
+    margin-left: 10px;
+  }
+  
+ .userSearchAdmin ::placeholder {
+    color: #abb2bf;
+  }
+
+
+
+
+
+  * {
+    box-sizing: border-box;
+}
+
+ .userSearchAdmin body {
+    background-color: #000000;
+}
+
+.userSearchAdmin .appli-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.userSearchAdmin .appli-list .cards {
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.userSearchAdmin .appli-list .cards .red {
+    background-color: #3e3d42;
+
+}
+
+.userSearchAdmin .appli-list .cards .card {
+    padding: 0px 50px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    text-align: center;
+    gap: 30px;
+    height: 70px;
+    width: 700px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: 400ms transform, 400ms box-shadow, 400ms background-color;
+    /* box-shadow: 0 0 20px #FFFDE7; */
+    align-items: center;
+}
+
+.userSearchAdmin .appli-list .cards .card p.tip {
+    font-size: 1em;
+    color: aquamarine;
+    font-weight: 700;
+}
+
+.userSearchAdmin .appli-list .cards .card p.second-text {
+    font-size: 0.7em;
+}
+
+
+
+.userSearchAdmin .appli-list img {
+    margin-top: 10px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+}
+
+
+.userSearchAdmin .showData{
+  display: flex;
+  margin: 40px;
+
+}
+
+.userSearchAdmin .otherdetails{
+  margin-left: 70px;
+}
+.userSearchAdmin .userimg{
+  margin: 20px;
+  border-radius: 5px;
+}
+

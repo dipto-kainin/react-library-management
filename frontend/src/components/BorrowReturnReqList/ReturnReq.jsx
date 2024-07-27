@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
+import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast, Center } from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
+
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 
@@ -13,16 +14,16 @@ const UserBorrowed = () => {
     const [hasFetched, setHasFetched] = useState(false);
     const toast = useToast();
 
-    useEffect(()=>{
-        async function fetchReturnReqList(){
+    useEffect(() => {
+        async function fetchReturnReqList() {
             setLoading(true);
-            const config ={
+            const config = {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`
                 }
             }
-            const {data}=await axios.get(`/api/book/returnReqList`,config);
+            const { data } = await axios.get(`/api/book/returnReqList`, config);
             setHasFetched(true);
             setLoading(false);
             if (Array.isArray(data)) {
@@ -39,13 +40,13 @@ const UserBorrowed = () => {
             }
             console.log(data);
         }
-        if(!hasFetched)
+        if (!hasFetched)
             fetchReturnReqList();
     });
 
     return (
         <>
-            {!loading  ? (
+            {!loading ? (
                 <Container maxW="container.xl">
                     <Box
                         bg="rgba(0,0,0,0.1)"
@@ -72,8 +73,7 @@ const UserBorrowed = () => {
                                     <Th textColor="white" fontSize="medium">Author</Th>
                                     <Th textColor="white" fontSize="medium">isbn</Th>
                                     <Th textColor="white" fontSize="medium">Image</Th>
-                                    <Th textColor="green" fontSize="medium" fontWeight="900">Accept</Th>
-                                    <Th textColor="red" fontSize="medium" fontWeight="900">reject</Th>
+                                    <Th textColor="white" fontSize="medium" fontWeight="900" textAlign={'center'}>Decision</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -86,8 +86,13 @@ const UserBorrowed = () => {
                                         <Td>
                                             <Image src={book.image} alt={book.title} boxSize="50px" />
                                         </Td>
-                                        <Td class="tick-cross"><button class="tick">✔</button></Td>
-                                        <Td class="tick-cross"><button class="cross">❌</button></Td>
+
+                                        <Td class="tick-cross">
+                                            <div className="but-group">
+                                                <div><button id="btn-green">Accept</button></div>
+                                                <div><button id="btn-red">Cancel</button></div>
+                                            </div>
+                                        </Td>
                                     </Tr>
                                 ))}
                             </Tbody>

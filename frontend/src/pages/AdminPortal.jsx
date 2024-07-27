@@ -22,7 +22,7 @@ const AdminPortal = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <h1><BorrowBookReqList/></h1>
+              <BorrowBookReqList/>
             </TabPanel>
             <TabPanel>
               <ReturnReq/>

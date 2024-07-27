@@ -12,6 +12,7 @@ import Showbook from './components/Showbook/ShowBook';
 import UserBorrowed from './components/UserBorrowedBooks/UserBorrowed';
 import AdminNavbar from './components/Navbar/AdminNavbar';
 import AdminPortal from './pages/AdminPortal';
+import UserDetailsSearch from './components/AdminSearchPanel/UserDetailsSearch';
 
 function App() {
   const {user}=useContext(AuthContext);
@@ -25,6 +26,7 @@ function App() {
             <Routes>
               <Route path={"/"} element={<AdminPortal/>}/>
               <Route path="/home/*" element={<Navigate to="/" />} />
+              <Route path="/search" element={<UserDetailsSearch/>} />
             </Routes>
             </div>
           </BrowserRouter>

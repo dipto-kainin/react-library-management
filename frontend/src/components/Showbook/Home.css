@@ -14,7 +14,7 @@
     padding: .4em;
 }
 
-.card p {
+.card .showBook-p {
     height: 100%;
     width: 100%;
     flex: 1;
@@ -25,15 +25,15 @@
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid #ff5a91;
 }
-.card p::-webkit-scrollbar {
+.card .showBook-p::-webkit-scrollbar {
     width: 0 !important
 }
-.card p:hover {
+.card .showBook-p:hover {
     flex: 3;
     overflow-y:auto;
 }
 
-.card p span {
+.card .showBook-p span {
     min-width: 14em;
     padding: .5em;
     text-align: center;
@@ -45,11 +45,11 @@
     justify-content: center;
     align-items: center;
 }
-.card p span img{
+.card .showBook-p span img{
     margin-bottom: 1em;
     transform: rotate(35deg);
     transition: transform .5s;
 }
-.card p:hover span img{
+.card .showBook-p:hover span img{
     transform: rotate(0);
 }

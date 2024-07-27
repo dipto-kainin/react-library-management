@@ -18,7 +18,10 @@ function AdminNavbar() {
     const handleUserProfile = () => {
         navigate('/user')
     }
-    const handleUserSearch = (e) => { }
+    const handleUserSearch = (e) => {
+        e.preventDefault();
+        navigate('/search');
+    }
     const handleLogout = () => {
         logout();
         navigate('/home');

@@ -13,7 +13,7 @@
 }
 
 .appli-list .cards .red {
-    background-color: #5E35B1;
+    background-color: #32343873;
 }
 
 .appli-list .cards .card {
@@ -26,7 +26,7 @@
     height: 70px;
     width: 1000px;
     border-radius: 50px;
-    color: white;
+    color: aquamarine;
     cursor: pointer;
     transition: 400ms transform, 400ms box-shadow, 400ms background-color;
     box-shadow: 0 0 20px #FFFDE7;
@@ -42,18 +42,18 @@
     font-size: 0.7em;
 }
 
-.appli-list .cards .card:hover {
-    transform: scale(1.1);
+/* .appli-list .cards .card:hover {
+    transform: scale(1.0);
     box-shadow: 0 0 20px rgba(107, 212, 218, 0.764);
     background-color: rgba(255, 255, 255, 0.1);
     color: #a40df5;
-}
+} */
 
-.appli-list .cards:hover> .card:not(:hover) {
+/* .appli-list .cards:hover> .card:not(:hover) {
     filter: blur(10px);
-    transform: scale(0.9);
+    transform: scale(1.0);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .appli-list img {
     margin-top: 10px;
@@ -61,7 +61,7 @@
     border-radius: 5px;
 }
 
-.appli-list .but-group {
+ .but-group {
     display: flex;
     flex-direction: row;
     align-content: center;
@@ -70,7 +70,7 @@
     gap: 25px;
 }
 
-.appli-list .but-group button {
+.but-group button {
     padding: 10px 20px;
     text-transform: uppercase;
     border-radius: 20px;
@@ -86,28 +86,30 @@
     user-select: none;
 }
 
-.appli-list .but-group #btn-red {
-    color: red;
-    border: 1px solid red;
+.but-group #btn-red {
+    color: rgb(255, 255, 255);
+    background-color: rgb(200, 16, 16);
+    border: 1px solid rgb(255, 255, 255);
 }
 
-.appli-list .but-group #btn-red:hover {
+/* .appli-list .but-group #btn-red:hover {
     color: #ffffff;
     background: #D32F2F;
     border: 1px solid #D32F2F;
     text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
     box-shadow: 0 0 5px #F06292, 0 0 20px #F06292, 0 0 50px #F06292, 0 0 100px #F06292;
+} */
+
+.but-group #btn-green {
+    color: rgb(255, 255, 255);
+    background-color: #5b9e0f;
+    border: 1px solid rgb(255, 255, 255);
 }
 
-.appli-list .but-group #btn-green {
-    color: #8BC34A;
-    border: 1px solid #8BC34A;
-}
-
-.appli-list .but-group #btn-green:hover {
+/* .appli-list .but-group #btn-green:hover {
     color: #ffffff;
     background: #43A047;
     border: 1px solid #43A047;
     text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
     box-shadow: 0 0 5px #66BB6A, 0 0 20px #66BB6A, 0 0 50px #66BB6A, 0 0 100px #66BB6A;
-}
+} */
