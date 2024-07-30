@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import './UserNavbar.css'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/UserContext';
+import { Avatar } from '@chakra-ui/react';
+
 function AdminNavbar() {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ function AdminNavbar() {
         navigate('/search');
     }
 
-    const handleViewBook=(e)=>{
+    const handleViewBook = (e) => {
         e.preventDefault();
         navigate('/view');
     }
@@ -51,11 +53,7 @@ function AdminNavbar() {
                     </div>
                     <div className="detail">
                         <div className="icon">
-                            <p href="#" className="circle" onClick={openForm}>
-                                <img height="30" width="30"
-                                    src={user ? user.pic : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
-                                    alt="Cloud Chen" />
-                            </p>
+                            <Avatar name={user ? user.name : "user"} src={user ? user.pic : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} onClick={openForm} />
                         </div>
                         {
                             <div className="userinfo" id="myForm">

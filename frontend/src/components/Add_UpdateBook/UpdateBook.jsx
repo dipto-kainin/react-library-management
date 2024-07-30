@@ -11,7 +11,7 @@ function Update() {
         <div className="inputContainer">
         <input type="text" className="inputField" id="bookname" placeholder="Book name"/>
         </div>
-    <div className="inputContainer">
+    <div className="inputContainer"> 
         <input type="text" className="inputField" id="authername" placeholder="Auther name"/>
     </div>
     <div className="inputContainer">

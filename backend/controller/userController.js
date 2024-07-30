@@ -220,7 +220,6 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
 const uploadImg = expressAsyncHandler(async(req,res)=>{
     try {
         if (!req.file) {
-            console.log("hi")
             return res.status(400).json({ error: 'No file uploaded' });
         }
         const imgRef = ref(storage, `files/user/${req.user.email}`);

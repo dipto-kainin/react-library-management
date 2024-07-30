@@ -68,10 +68,7 @@ function UserNavbar() {
                     </div>
                 </div>
                 <div className="icon">
-                    <Avatar name={user?user.name:"user"} src={user?user.pic:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} onClick={openForm}>
-                        <img height="30" width="30"
-                            alt="Cloud Chen"/>
-                    </Avatar>
+                    <Avatar name={user?user.name:"user"} src={user?user.pic:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} onClick={openForm}/>
                 </div>
                 {user?
                 (<div className="userinfo" id="myForm">
