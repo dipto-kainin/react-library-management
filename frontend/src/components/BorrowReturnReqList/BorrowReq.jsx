@@ -51,7 +51,6 @@ function BorrowBookReqList() {
         const getBookBorrowReq = async () => {
             const response = await axios.get(`/api/book/borrowReqList`,config);
             const data = response.data;
-            console.log(data);
             setBooks(data);
         }
         getBookBorrowReq();
@@ -80,7 +79,7 @@ function BorrowBookReqList() {
                                         src={item.image} alt="Cloud Chen" />
                                 </div>
                                 <div className="but-group">
-                                    <div><button id="btn-green" onClick={handelAccept()}>Accept</button></div>
+                                    <div><button id="btn-green" onClick={()=>handelAccept(index)}>Accept</button></div>
                                     <div><button id="btn-red" onClick={()=>handelCancel(index)}>Cancel</button></div>
                                 </div>
                             </div>

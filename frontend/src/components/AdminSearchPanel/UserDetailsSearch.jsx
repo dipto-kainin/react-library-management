@@ -29,7 +29,7 @@ function UserDetailsSearch() {
                 .catch(err => console.log(err));
         }
         else {
-            alert("Please enter something");
+            //alert("Please enter something");
         }
     };
 

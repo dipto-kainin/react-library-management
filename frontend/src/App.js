@@ -13,6 +13,9 @@ import UserBorrowed from './components/UserBorrowedBooks/UserBorrowed';
 import AdminNavbar from './components/Navbar/AdminNavbar';
 import AdminPortal from './pages/AdminPortal';
 import UserDetailsSearch from './components/AdminSearchPanel/UserDetailsSearch';
+import BookDetailsView from './components/BookDetailsView/BookDetailsView'
+import UpdateBook from './components/Add_UpdateBook/UpdateBook'
+import AddBook from './components/Add_UpdateBook/AddBook'
 
 function App() {
   const {user}=useContext(AuthContext);
@@ -27,6 +30,9 @@ function App() {
               <Route path={"/"} element={<AdminPortal/>}/>
               <Route path="/home/*" element={<Navigate to="/" />} />
               <Route path="/search" element={<UserDetailsSearch/>} />
+              <Route path="/view" element={<BookDetailsView/>} />
+              <Route path="/update" element={<UpdateBook/>} />
+              <Route path="/addbook" element={<AddBook/>} />
             </Routes>
             </div>
           </BrowserRouter>

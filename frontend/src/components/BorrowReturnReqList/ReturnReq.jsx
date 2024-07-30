@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast, Center } from '@chakra-ui/react';
+import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';

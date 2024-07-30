@@ -16,5 +16,5 @@ router.route("/borrowReqAccept").post(protected,borrowReqAccept);
 router.route("/returnReqList").get(protected,returnReqList);
 router.route("/returnReq").post(protected,returnReq);
 router.route("/returnBook").post(protected,returnBook);
-router.route("/search/:searchitem").get(search);
+// router.route("/search/:searchitem").get(search);
 module.exports = router;

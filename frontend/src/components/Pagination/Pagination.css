@@ -1,0 +1,86 @@
+/* .pagination{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(18, 45, 37, 0.486);
+}
+.pagination p{
+    color: rgb(243, 104, 104);
+    text-decoration: none;
+    padding: 8px 15px;
+    display: inline-block;
+}
+.pagination p.active{
+    background-color: hsl(0, 0%, 0%);
+    font-weight: bold;
+    border-radius: 5px;
+}
+.pagination p:hover:not(.active){
+    background-color: hsl(0, 0%, 77%);
+    border-radius: 5px;
+}
+ */
+
+
+
+ .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.toControl-overflow {
+    display: flex;
+    align-items: center;
+}
+
+.toControl-overflow p {
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #000;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 5px;
+}
+
+
+
+.toControl-overflow .btn{
+    border-radius: 50%;
+    margin: 0 10px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #000;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+.toControl-overflow p:hover:not(.btn) {
+    background-color: #e0e0e0;
+    color: #000;
+}
+
+.toControl-overflow p.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.toControl-overflow p:first-of-type,
+.toControl-overflow p:last-of-type {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* .toControl-overflow p:first-of-type:hover,
+.toControl-overflow p:last-of-type:hover {
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+} */

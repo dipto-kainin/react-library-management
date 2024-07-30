@@ -32,7 +32,7 @@ function ShowSpecificBook() {
         axios.post(`/api/book/borrowReq`,{isbnPre},config)
         .then(res=>{
             console.log(res);
-            alert(res.data.message);
+            //alert(res.data.message);
         });
     }
 

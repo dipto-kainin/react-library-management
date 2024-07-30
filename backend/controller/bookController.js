@@ -381,4 +381,4 @@ const returnBook = expressAsyncHandler(async(req,res)=>{
         res.status(401).send("You are not authorized to view this page");
     }
 });
-module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,search};
+module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook};

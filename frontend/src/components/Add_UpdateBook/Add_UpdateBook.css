@@ -1,0 +1,223 @@
+.book {
+  width: 80vh;
+  margin: auto;
+  background-color: rgb(34, 31, 33);
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.book .form_main {
+  width: 100%;
+  border: 2px solid violet;
+  padding: 100px;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color: transparent;
+  padding: 30px 30px 30px 30px;
+  box-shadow: 0 5px 10px 0 rgba(241, 174, 236, 0.2), 0 8px 15px 0 rgba(213, 148, 219, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+
+.book .heading {
+  font-size: 2em;
+  color: #b563b0;
+  font-weight: 500;
+  margin: 5px 0 10px 0;
+  z-index: 1;
+
+}
+
+.book .inputContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.book .inputIcon {
+  position: absolute;
+  left: 3px;
+}
+
+.book .inputField {
+  width: 100%;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid rgb(173, 173, 173);
+  margin: 10px 0;
+  color: whitesmoke;
+  font-size: .8em;
+  font-weight: 500;
+  box-sizing: border-box;
+  padding-left: 30px;
+}
+
+.book .inputField:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(199, 114, 255);
+}
+
+.book .inputField::placeholder {
+  color: rgb(226, 213, 213);
+  font-size: 1em;
+  font-weight: 500;
+}
+
+
+.book .file-upload-form {
+  width: fit-content;
+  /* height: fit-content; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book .file-upload-label input {
+  display: none;
+}
+
+.book .file-upload-label svg {
+  height: 30px;
+  fill: rgb(231, 105, 233);
+  margin-bottom: 1px;
+}
+
+.book .file-upload-label {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 7px 70px;
+  border-radius: 20px;
+  border: 1px dashed rgb(197, 24, 200);
+  box-shadow: 0px 0px 200px -50px rgba(156, 14, 14, 0.719);
+}
+
+.book .file-upload-design {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.book .browse-button {
+  background-color: rgb(231, 105, 233);
+  padding: 5px 15px;
+  border-radius: 10px;
+  color: white;
+  transition: all 0.3s;
+}
+
+.book .browse-button:hover {
+  background-color: rgb(200, 41, 211);
+}
+
+.book .button-container {
+  text-align: center;
+}
+
+.book .Parag {
+  color: whitesmoke;
+}
+
+.book .button {
+  /* z-index: 2; */
+  position: relative;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 4px;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  gap: 10px;
+  width: 45%;
+  height: 40px;
+  font-size: 15px;
+  font-weight: 580;
+  color: white;
+  border: none;
+  background-size: 200% 200%;
+  background-color: #99fff7;
+  background-image: radial-gradient(at 65% 89%,
+      hsla(249, 100%, 62%, 1) 0px,
+      transparent 50%),
+    radial-gradient(at 68% 76%, hsla(334, 100%, 74%, 1) 0px, transparent 50%),
+    radial-gradient(at 52% 39%, hsla(34, 100%, 71%, 1) 0px, transparent 50%),
+    radial-gradient(at 12% 37%, hsla(282, 100%, 66%, 1) 0px, transparent 50%),
+    radial-gradient(at 34% 9%, hsla(201, 100%, 63%, 1) 0px, transparent 50%),
+    radial-gradient(at 89% 18%, hsla(193, 100%, 74%, 1) 0px, transparent 50%),
+    radial-gradient(at 36% 37%, hsla(251, 100%, 65%, 1) 0px, transparent 50%);
+  background-position: left;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: all 3s;
+}
+
+.book .button:hover {
+  background-position: right;
+}
+
+/* To hide the checkbox */
+.book #checkboxInput {
+  display: none;
+  left: 100px;
+}
+
+.book .toggleSwitch {
+  display: flex;
+  right: 250px;
+  top: 15px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 50px;
+  height: 20px;
+  background-color: rgb(199, 199, 199);
+  border-radius: 20px;
+  cursor: pointer;
+  transition-duration: .3s;
+}
+
+.book .toggleSwitch::after {
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 25px;
+  left: 0px;
+  background: conic-gradient(rgb(104, 104, 104), white, rgb(104, 104, 104), white, rgb(104, 104, 104));
+  border-radius: 50%;
+  transition-duration: .3s;
+  box-shadow: 5px 2px 7px rgba(8, 8, 8, 0.308);
+}
+
+.book #checkboxInput:checked+.toggleSwitch::after {
+  transform: translateX(100%);
+  transition-duration: .3s;
+}
+
+/* Switch background change */
+.book #checkboxInput:checked+.toggleSwitch {
+  background-color: rgb(211, 66, 194);
+  transition-duration: .3s;
+}
+
+.book .cancel_button {
+  background-color: red;
+  color: white;
+  top: 15px;
+  height: 30px;
+  font-size: medium;
+  font-weight: 100;
+  width: 85px;
+}

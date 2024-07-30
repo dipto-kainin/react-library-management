@@ -3,6 +3,7 @@ import Showbook from '../components/Showbook/ShowBook';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BookContext } from '../context/bookContext';
+import Pagination from '../components/Pagination/Pagination';
 const Home = () => {
     const { pageNo } = useParams();
     const {setBooks} = useContext(BookContext);
@@ -11,7 +12,14 @@ const Home = () => {
             try {
                 const page = pageNo || '1';
                 const response = await axios.get(`/api/book/fetchBooks/${page}`);
-                setBooks(response.data.data);
+                if(response.data.msg)
+                {
+                    setBooks([]);
+                }
+                else
+                {
+                    setBooks(response.data.data);
+                }
                 console.log(response.data.data)
             } catch (err) {
                 console.log(err);
@@ -22,6 +30,7 @@ const Home = () => {
     return (
         <div className='Home'>
             <Showbook/>
+            <Pagination/>
         </div>
     );
 };
