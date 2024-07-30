@@ -381,4 +381,23 @@ const returnBook = expressAsyncHandler(async(req,res)=>{
         res.status(401).send("You are not authorized to view this page");
     }
 });
-module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook};
+//done by dipto
+const uploadImg = expressAsyncHandler(async(req,res)=>{
+    if(req.user.role==="Admin"){
+        try {
+            const imgRef = ref(storage, `files/book/${uuidv4()}`);
+            const snapshot = await uploadBytes(imgRef, req.file.buffer, {
+            contentType: req.file.mimetype,
+            });
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            res.status(200).json({ imageUrl: downloadURL });
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+    else{
+        res.status(401).send("You are not authorized to view this page");
+    }
+})
+module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,uploadImg};

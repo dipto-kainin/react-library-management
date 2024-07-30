@@ -3,6 +3,9 @@ const User = require("../model/userModel");
 const Book = require("../model/bookModel");
 const generateToken = require("../utils/generateToken");
 const transporter = require("../utils/mailSender");
+const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+const { storage } = require('../config/firebase');
+const { v4: uuidv4 } = require('uuid');
 
 //done by som
 const registerUser = expressAsyncHandler(async (req, res) => {
@@ -54,6 +57,7 @@ const updateUser = expressAsyncHandler(async (req, res) => {
         if (req.user._id) {
             const { name, email, address, pic, newPassword, oldPassword } = req.body;
             const user = await User.findOne({ _id: req.user._id });
+            console.log(pic);
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
@@ -141,7 +145,6 @@ const resetPassword = expressAsyncHandler(async (req, res) => {
     }
 });
 //done by dipto
-
 const userBorrowedBook = expressAsyncHandler(async (req, res) => {
     try {
         if (req.user && req.user._id) {
@@ -174,10 +177,7 @@ const userBorrowedBook = expressAsyncHandler(async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 });
-
-
-
-
+//done by sudipta/dipto
 const userDetailsSearch = expressAsyncHandler(async (req, res) => {
     try {
         if (req.user.role !== "user") {
@@ -216,7 +216,20 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
         res.send({ mas: "Some problem occured" })
     }
 });
-
-
-
-module.exports = { registerUser, authUser, updateUser, forgotPassword, resetPassword, userBorrowedBook, userDetailsSearch }
+//done by dipto
+const uploadImg = expressAsyncHandler(async(req,res)=>{
+    try {
+        if (!req.file) {
+            console.log("hi")
+            return res.status(400).json({ error: 'No file uploaded' });
+        }
+        const imgRef = ref(storage, `files/user/${req.user.email}`);
+        const snapshot = await uploadBytes(imgRef, req.file.buffer, { contentType: req.file.mimetype });
+        const downloadURL = await getDownloadURL(snapshot.ref);
+        res.status(200).json({ imageUrl: downloadURL });
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: error.message });
+    }
+})
+module.exports = { registerUser, authUser, updateUser, forgotPassword, resetPassword, userBorrowedBook, userDetailsSearch,uploadImg }

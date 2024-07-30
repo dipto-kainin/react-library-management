@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
-import './UserNavbar.css'
+import './UserNavbar.css';
+import {Avatar} from "@chakra-ui/react"
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/UserContext';
 import { BookContext } from '../../context/bookContext';
@@ -67,11 +68,10 @@ function UserNavbar() {
                     </div>
                 </div>
                 <div className="icon">
-                    <p href="#" className="circle" onClick={openForm}>
+                    <Avatar name={user?user.name:"user"} src={user?user.pic:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} onClick={openForm}>
                         <img height="30" width="30"
-                            src={user?user.pic:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
                             alt="Cloud Chen"/>
-                    </p>
+                    </Avatar>
                 </div>
                 {user?
                 (<div className="userinfo" id="myForm">

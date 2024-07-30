@@ -1,19 +1,20 @@
 // firebase.js
-const initializeApp = require("firebase/app");
-const getStorage = require('firebase/storage');
-
+const { initializeApp } = require("firebase/app");
+const { getStorage } = require("firebase/storage");
+const dotenv = require("dotenv");
+dotenv.config();
 const firebaseConfig = {
-    apiKey: process.env.firebaseAPI,
-    authDomain: process.env.firebaseProjectID+'.firebaseapp.com',
-    projectId: process.env.firebaseProjectID,
-    storageBucket: process.env.firebaseProjectID+".appspot.com/library",
-    messagingSenderId: process.env.firebaseMessagingSenderID,
-    appId: "1:"+process.env.firebaseMessagingSenderID+":web:f342178005906f5947ee06"
+    apiKey: process.env.apiKey,
+    authDomain:  process.env.authDomain,
+    projectId:  process.env.projectId,
+    storageBucket:  process.env.storageBucket,
+    messagingSenderId: process.env.messagingSenderId,
+    appId:  process.env.appId,
 };
-
+console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-if(storage){
+if (storage) {
     console.log("Firebase storage connected successfully");
 }
-module.exports={storage};
+module.exports = { storage };

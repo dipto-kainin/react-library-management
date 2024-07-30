@@ -22,6 +22,34 @@ const UserInfo = () => {
 
     const handleCheckboxChange = () => {
         setIsUpdated(!isUpdated);
+        console.log(currUser);
+    };
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+
+            const { data } = await axios.post('/api/user/uploadImg', formData, config);
+
+            if (data.imageUrl) {
+                setCurrUser({ ...currUser, pic: data.imageUrl });
+                console.log(data.imageUrl);
+            } else {
+                setError(data.error || 'Error uploading image');
+            }
+        } catch (error) {
+            setError(error.response?.data?.message || error.message);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -34,20 +62,20 @@ const UserInfo = () => {
                     Authorization: `Bearer ${user.token}`
                 },
             };
-
+            console.log(currUser.imageUrl);
             const { data } = await axios.put('/api/user/update', {
                 name: currUser.name,
                 email: currUser.email,
                 address: currUser.address,
+                pic: currUser.pic,
                 newPassword: currUser.newPassword,
                 oldPassword: currUser.oldPassword
             }, config);
+
             login(data);
             navigate('/home');
         } catch (error) {
-            setError(error.response && error.response.data.message
-                ? error.response.data.message
-                : error.message);
+            setError(error.response?.data?.message || error.message);
         }
     };
 
@@ -59,7 +87,10 @@ const UserInfo = () => {
                     <div className="form-valueR">
                         <form className='Register' onSubmit={handleSubmit}>
                             {error && <div className="error">{error}</div>}
-                            <img src={currUser.pic} height="100px" width={"100px"} alt="User"/>
+                            <div className='user_Image'>
+                                <img src={currUser.pic} height="100px" width="100px" alt="User" />
+                                <input type="file" onChange={handleImageChange} />
+                            </div>
                             <div className="inputbox">
                                 <ion-icon name="person-outline"></ion-icon>
                                 <input
@@ -71,7 +102,7 @@ const UserInfo = () => {
                                     onChange={handleChange}
                                     disabled={!isUpdated}
                                 />
-                                {isUpdated&&<label>Name</label>}
+                                {isUpdated && <label>Name</label>}
                             </div>
                             <div className="inputbox">
                                 <ion-icon name="mail-outline"></ion-icon>
@@ -84,7 +115,7 @@ const UserInfo = () => {
                                     onChange={handleChange}
                                     disabled={!isUpdated}
                                 />
-                                {isUpdated&&<label>Email</label>}
+                                {isUpdated && <label>Email</label>}
                             </div>
                             <div className="inputbox">
                                 <ion-icon name="location-outline"></ion-icon>
@@ -97,7 +128,7 @@ const UserInfo = () => {
                                     onChange={handleChange}
                                     disabled={!isUpdated}
                                 />
-                                {isUpdated&&<label>Address</label>}
+                                {isUpdated && <label>Address</label>}
                             </div>
                             <div className="CheckBox">
                                 <p>Update User Info?</p>

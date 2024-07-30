@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const {addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,search,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnBook,returnReq,returnReqList,returnReqCancel}= require("../controller/bookController")
+const {addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnBook,returnReq,returnReqList,uploadImg,returnReqCancel}= require("../controller/bookController")
 const {protected} = require("../middleware/auth");
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
+
 
 router.post("/addBook",protected,addBook);
 router.get("/fetchBooks/:pageNo",fetchBooks);
@@ -16,5 +19,6 @@ router.route("/borrowReqAccept").post(protected,borrowReqAccept);
 router.route("/returnReqList").get(protected,returnReqList);
 router.route("/returnReq").post(protected,returnReq);
 router.route("/returnBook").post(protected,returnBook);
+router.route('/uploadImg').post(protected,upload.single('image'),uploadImg);
 // router.route("/search/:searchitem").get(search);
 module.exports = router;
