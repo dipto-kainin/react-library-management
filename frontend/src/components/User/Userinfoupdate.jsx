@@ -73,7 +73,7 @@ const UserInfo = () => {
             }, config);
 
             login(data);
-            navigate('/home');
+            navigate('/home/1');
         } catch (error) {
             setError(error.response?.data?.message || error.message);
         }
@@ -88,7 +88,7 @@ const UserInfo = () => {
                         <form className='Register' onSubmit={handleSubmit}>
                             {error && <div className="error">{error}</div>}
                             <div className='user_Image'>
-                                <img src={currUser.pic} height="100px" width="100px" alt="User" />
+                                <img src={currUser.pic} alt="User" />
                                 <input type="file" onChange={handleImageChange} />
                             </div>
                             <div className="inputbox">

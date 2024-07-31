@@ -76,7 +76,7 @@ function UserNavbar() {
                         <div className="card__border"></div>
                         <div className="card_title__container">
                             <div className='img'>
-                                <img height="80" width="80"
+                                <img height="200" width="200"
                                     src={user.pic}
                                     alt="Cloud Chen"/>
                             </div>

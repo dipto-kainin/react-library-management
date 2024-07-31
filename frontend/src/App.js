@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useParams} from 'react-router-dom';
 import UserNavbar from './components/Navbar/UserNavbar';
 import Signin from './components/SignIn/Signin';
 import SignUp from './components/SignUp/SignUp';
@@ -16,6 +16,16 @@ import UserDetailsSearch from './components/AdminSearchPanel/UserDetailsSearch';
 import BookDetailsView from './components/BookDetailsView/BookDetailsView'
 import UpdateBook from './components/Add_UpdateBook/UpdateBook'
 import AddBook from './components/Add_UpdateBook/AddBook'
+
+function HomeWithRedirect() {
+  const { pageNo } = useParams();
+  const pageNumber = parseFloat(pageNo);
+  if (isNaN(pageNumber) || pageNumber < 1) {
+    return <Navigate to="/home/1" />;
+  }
+  return <Home />;
+}
+
 
 function App() {
   const {user}=useContext(AuthContext);
@@ -41,7 +51,7 @@ function App() {
             <UserNavbar />
             <div className="inside">
               <Routes>
-                <Route path="/home/:pageNo" element={<Home />} />
+                <Route path="/home/:pageNo" element={<HomeWithRedirect />} />
                 <Route path="/login" element={<Signin />} exact />
                 <Route path="/signup" element={<SignUp />} exact />
                 <Route path="/search" element={<Showbook />} />
@@ -52,7 +62,6 @@ function App() {
                   element={<ShowSpecificBook />}
                   exact
                 />
-                <Route path="/home/" element={<Navigate to="/home/1" />} />
               </Routes>
             </div>
           </BrowserRouter>

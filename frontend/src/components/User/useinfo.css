@@ -15,6 +15,17 @@
     padding: 1em;
     margin: auto;
 }
+.UserInfo .form-boxR .user_Image{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    margin: auto;
+}
+.UserInfo .form-boxR .user_Image img{
+    width: 40vh;
+}
 
 .UserInfo .Register {
     color: #fff;
