@@ -40,8 +40,8 @@ function App() {
               <Route path={"/"} element={<AdminPortal/>}/>
               <Route path="/home/*" element={<Navigate to="/" />} />
               <Route path="/search" element={<UserDetailsSearch/>} />
-              <Route path="/view" element={<BookDetailsView/>} />
-              <Route path="/update" element={<UpdateBook/>} />
+              <Route path="/allBooks" element={<BookDetailsView/>} />
+              <Route path="/book/:isbnPre" element={<UpdateBook/>} />
               <Route path="/addbook" element={<AddBook/>} />
             </Routes>
             </div>

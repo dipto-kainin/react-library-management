@@ -160,9 +160,10 @@ const userBorrowedBook = expressAsyncHandler(async (req, res) => {
                 const isbnPre = isbnid.split("-")[0];
                 const book = await Book.findOne({ isbnPre }).select("-isbn -borrowReq -returnReq");
                 return {
-                    isbnid,
+                    isbnPre: book.isbnPre,
                     title: book.title,
                     author: book.author,
+                    isbnid,
                     genre: book.genre,
                     image: book.image
                 };

@@ -11,18 +11,18 @@ function Update() {
         <div className="inputContainer">
         <input type="text" className="inputField" id="bookname" placeholder="Book name"/>
         </div>
-    <div className="inputContainer"> 
+    <div className="inputContainer">
         <input type="text" className="inputField" id="authername" placeholder="Auther name"/>
     </div>
     <div className="inputContainer">
         <input type="text" className="inputField" id="typeofbook" placeholder="Genre"/>
-    </div>          
+    </div>
     <div className="inputContainer">
         <input type="text" className="inputField" id="isbnpre" placeholder="Isbn pre"/>
-    </div> 
+    </div>
     <div className="inputContainer">
         <input type="text" className="inputField" id="description" placeholder="Description"/>
-    </div> 
+    </div>
     <input id="checkboxInput" type="checkbox"/>
     <label className="toggleSwitch" for="checkboxInput">
     </label>

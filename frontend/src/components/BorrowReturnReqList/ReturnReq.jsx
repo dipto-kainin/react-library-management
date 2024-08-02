@@ -60,7 +60,31 @@ const UserBorrowed = () => {
             alert(data.message);
         }
     }
-
+    const handleReqCancel =async (isbnPre,userid)=>{
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        }
+        const {data} =await axios.post(`/api/book/returnReqCancel`,{userid,isbnPre},config);
+        if (data.message==="return request cancelled successfully") {
+            toast({
+                title: 'Request Cancelled',
+                description: data.message,
+                status: 'success',
+                duration: 2000,
+            })
+        }
+        else{
+            toast({
+                title: 'Error',
+                description: data.message,
+                status: 'error',
+                duration: 2000,
+            });
+        }
+    }
     return (
         <>
             {!loading ? (
@@ -107,7 +131,7 @@ const UserBorrowed = () => {
                                         <Td class="tick-cross">
                                             <div className="but-group">
                                                 <div><button id="btn-green" onClick={()=>handleReqAccept(book.returnReq.email,book.isbnPre)}>Accept</button></div>
-                                                <div><button id="btn-red" onClick={""}>Cancel</button></div>
+                                                <div><button id="btn-red" onClick={()=>handleReqCancel(book.isbnPre,book.returnReq.userId)}>Cancel</button></div>
                                             </div>
                                         </Td>
                                     </Tr>

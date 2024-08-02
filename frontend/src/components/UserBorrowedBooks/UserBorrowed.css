@@ -1,0 +1,14 @@
+#btn-blue {
+    padding: 10px 20px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    text-shadow: none;
+    cursor: pointer;
+    box-shadow: transparent;
+    border: 1px solid #ffffff80;
+    background-color: rgb(4, 123, 202);
+    border: 1px solid rgb(255, 255, 255);
+}

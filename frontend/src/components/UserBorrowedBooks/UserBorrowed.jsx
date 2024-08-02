@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image } from '@chakra-ui/react';
+import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image , useToast} from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
+import "./UserBorrowed.css"
 
 const UserBorrowed = () => {
     const { user } = useContext(AuthContext);
     const [borrowedBooks, setBorrowedBooks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hasFetched, setHasFetched] = useState(false);
+    const toast = useToast();
 
     useEffect(() => {
         async function getMyBorrowedBook() {
@@ -23,17 +25,14 @@ const UserBorrowed = () => {
                 };
                 const response = await axios.get(`/api/user/borrowed/`, config);
                 const data = response.data;
-
-                // Ensure the data is an array before setting it
                 if (Array.isArray(data)) {
                     setBorrowedBooks(data);
                 } else {
-                    //alert(data.message);
                     setBorrowedBooks([]);
                 }
 
                 setLoading(false);
-                setHasFetched(true); // Set flag to true after fetching
+                setHasFetched(true);
             } catch (error) {
                 console.error("Error fetching borrowed books:", error);
                 setLoading(false);
@@ -42,9 +41,38 @@ const UserBorrowed = () => {
         getMyBorrowedBook();
     }, [user.token, hasFetched]);
 
+    const returnReq = async (isbnPre)=>{
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${user.token}`
+            }
+        }
+        const {data} = await axios.post('/api/book/returnReq/',{isbnPre},config);
+        console.log(data);
+        if(data.message === "return request sent successfully"){
+            toast({
+                title: 'Return Request Sent',
+                description: 'Your return request has been sent to the library.',
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+            });
+        }
+        else{
+            toast({
+                title: 'Error',
+                description: 'Failed to send return request.',
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+            });
+        }
+    }
+
 
     return (
-        <>
+        <div className='userBorrowed'>
             {!loading ? (
                 <Container maxW="container.xl">
                     <Box
@@ -69,8 +97,10 @@ const UserBorrowed = () => {
                                 <Tr >
                                     <Th textColor="white">Title</Th>
                                     <Th textColor="white">Author</Th>
+                                    <Th textColor="white">Isbn Id</Th>
                                     <Th textColor="white">Genre</Th>
                                     <Th textColor="white">Image</Th>
+                                    <Th textColor="white">Decision</Th>
                                 </Tr>
                             </Thead>
                             <Tbody>
@@ -78,9 +108,13 @@ const UserBorrowed = () => {
                                     <Tr key={index}>
                                         <Td>{book.title}</Td>
                                         <Td>{book.author}</Td>
+                                        <Td>{book.isbnid}</Td>
                                         <Td>{book.genre}</Td>
                                         <Td>
-                                            <Image src={book.image} alt={book.title} boxSize="50px" />
+                                            <Image src={book.image} alt={book.title} boxSize="50px"/>
+                                        </Td>
+                                        <Td class="tick-cross">
+                                            <div><button id="btn-blue" onClick={()=>returnReq(book.isbnPre)}>Return?</button></div>
                                         </Td>
                                     </Tr>
                                 ))}
@@ -91,7 +125,7 @@ const UserBorrowed = () => {
             ) : (
                 <Loader />
             )}
-        </>
+        </div>
     );
 };
 

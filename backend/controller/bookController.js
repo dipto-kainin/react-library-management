@@ -2,8 +2,13 @@ const expressAsyncHandler = require("express-async-handler");
 const Book = require("../model/bookModel");
 const User = require("../model/userModel");
 const mongoose = require("mongoose");
+const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+const { storage } = require('../config/firebase');
+const { v4: uuidv4 } = require('uuid');
 //done by sayani
 const addBook = expressAsyncHandler(async (req, res) => {
+    if(req.user.role!=="Admin")
+        return res.status(401).json({message:"You are not authorized to perform this action"});
     const { title, author, genre, isbnPre, copies,image,description} = req.body;
     if (!title || !author || !genre || !isbnPre || !copies || !description) {
         res.status(400).json({ message: "All fields are required" });
@@ -44,7 +49,7 @@ const addBook = expressAsyncHandler(async (req, res) => {
                 description
             });
             const createdBook = await book.save();
-            res.status(201).json(createdBook);
+            res.status(201).json({message:"book added successfully"});
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -71,6 +76,18 @@ const fetchBooks = expressAsyncHandler(async (req, res) => {
         res.status(500).send({ msg: "Some problem occurred" });
     }
 });
+
+const fetchAll = expressAsyncHandler(async(req,res)=>{
+    try{
+        const books = await Book.find({}).select('-isbn -borrowReq -returnReq');
+        if(!books || books.length === 0){
+            return res.status(404).json({error:"Books not found"});
+        }
+        return res.send({data:books});
+    } catch(error){
+        console.log(error);
+    }
+})
 
 //done by dipto
 const fetchBook=expressAsyncHandler(async(req, res) =>{
@@ -101,12 +118,12 @@ const deleteBook = expressAsyncHandler(async(req, res) => {
     if(req.user.role!=="user")
         return res.status(401).json({message:"You are not authorized to perform this action"});
     try {
-        let book = await Book.find({ isbnPre: req.params.isbnPre })
+        let book = await Book.find({ isbnPre: req.body.isbnPre })
         if (book.isbn.some(copy => copy.borrowedBy)) {
             return res.status(400).send("borrower exist cant delete");
         }
         else {
-            const result = await Book.delete({ isbnPre: req.params.isbnPre })
+            const result = await Book.delete({ isbnPre: req.body.isbnPre })
             return res.send(result).status(200);
         }
     } catch (err) {
@@ -191,7 +208,7 @@ const borrowReqList = expressAsyncHandler(async (req, res) => {
             .populate('borrowReq', '_id email'); // Populate borrowReq with user's _id and email
 
         if (!books.length) {
-            return res.status(404).json({ message: "No books with borrow requests found" });
+            return res.status(200).json({ message: "No books with borrow requests found" });
         }
 
         const Books = books.flatMap(book =>
@@ -281,21 +298,16 @@ const returnReq = expressAsyncHandler(async(req,res)=>{
     try{
         const book=await Book.findOne({isbnPre});
         if(!book){
-            res.status(404);
-            throw new Error("Book not found");
+            return res.status(404).json({message:"Book not found"});
         }
-        //console.log(req.user._id.toString(),book.isbn[0].borrowedBy.toString() )
         if(!book.isbn.find((copy)=> copy.borrowedBy?.toString() == req.user._id.toString())){
-            res.status(404).json({message:"you do not have the book"});
-            throw new Error("Book not found");
+            return res.status(401).json({message:"you do not have the book"});
         }
         book.returnReq.push(req.user._id);
         await book.save();
-        res.status(200).json({
-            message: "return request updated successfully"
-        });
+        return res.status(200).json({message: "return request updated successfully"});
     }catch(err){
-        res.status(404).json({message:err.message});
+        return res.status(500).json({message:err.message});
     }
 });
 //done by dipto
@@ -304,8 +316,7 @@ const returnReqCancel = expressAsyncHandler(async(req,res)=>{
         const {isbnPre,userid}=req.body;
         const book=await Book.findOne({isbnPre});
         if(!book){
-            res.status(404);
-            throw new Error("Book not found");
+            res.status(404).json({ message : "Book not found" });
         }
         const index=book.returnReq.indexOf(userid);
         book.returnReq.splice(index,1);
@@ -315,7 +326,7 @@ const returnReqCancel = expressAsyncHandler(async(req,res)=>{
         });
     }
     else{
-        res.status(401).send("You are not authorized to view this page");
+        res.status(401).json({ message: "You are not authorized to view this page"});
     }
 });
 //done by dipto
@@ -400,4 +411,4 @@ const uploadImg = expressAsyncHandler(async(req,res)=>{
         res.status(401).send("You are not authorized to view this page");
     }
 })
-module.exports={addBook,fetchBooks,fetchBook,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,uploadImg};
+module.exports={addBook,fetchBooks,fetchBook,fetchAll,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,uploadImg};

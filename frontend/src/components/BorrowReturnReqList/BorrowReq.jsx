@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 import './borrowBookReqList.css';
-import {AuthContext} from "../../context/UserContext"
+import {AuthContext} from "../../context/UserContext";
+import {useToast} from "@chakra-ui/react"
 
 function BorrowBookReqList() {
     const {user}=useContext(AuthContext);
     const [books, setBooks] = useState([]);
+    const toast = useToast();
+    const [hasFetched, setHasFetched] = useState(false);
 
     const handelAccept = async(index)=>{
         try {
@@ -18,9 +21,19 @@ function BorrowBookReqList() {
             },
         };
         const {data}=await axios.post("api/book/borrowReqAccept",{isbnPre,email},config);
-        alert(data.message);
+        toast({
+            title: data.message,
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+        });
         } catch (error) {
-            alert(error.message);
+            toast({
+                title: error,
+                status: "error",
+                duration: 2000,
+                isClosable: true,
+            });
         }
     }
 
@@ -51,15 +64,28 @@ function BorrowBookReqList() {
         const getBookBorrowReq = async () => {
             const response = await axios.get(`/api/book/borrowReqList`,config);
             const data = response.data;
-            setBooks(data);
+            if(data.message === "No books with borrow requests found" )
+            {
+                setBooks([]);
+                toast({
+                    title: data.message,
+                    status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
+            else
+                setBooks(data);
+            setHasFetched(true)
         }
-        getBookBorrowReq();
+        if(!hasFetched)
+            getBookBorrowReq();
     });
     return (
         <>
             <div className="appli-list">
                 <div className="cards">
-                    {
+                    {books &&
                         books.map((item, index) =>
                             <div className="card red" key={index}>
                                 <div>

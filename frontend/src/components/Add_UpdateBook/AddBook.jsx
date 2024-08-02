@@ -1,57 +1,155 @@
-import './Add_UpdateBook.css'
+import React, { useContext, useState } from 'react';
+import './Add_UpdateBook.css';
+import { AuthContext } from '../../context/UserContext';
+import axios from 'axios';
+import { useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
 function Addbook(props) {
-  // const [firstName, setFirstName] = useState("");
-  // const [contact, setContact] = useState("");
-  // const [selectedOption, setSelectedOption] =
-  //     useState("");
-  // const [about, setAbout] = useState("");
+  const {user} = useContext(AuthContext);
+  const [title, setTitle] = useState("");
+  const [author, setAuthorname] = useState("");
+  const [genre, setGenre] = useState("");
+  const [isbnPre, setIsbnpre] = useState("");
+  const [description, setDescription] = useState("");
+  const [copies, setCopies] = useState(1);
+  const [image, setImage] = useState(null);
+  const [error, setError] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const toast =useToast();
+  const nav =useNavigate();
 
-  // const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //     console.log(
-  //         firstName,
-  //         selectedOption
-  //     );
-  //     // Add your form submission logic here
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const config = {
+      headers: {
+          Authorization: `Bearer ${user.token}`,
+      },
+    };
+    const res = await axios.post("/api/book/addBook",{
+      title,
+      author,
+      genre,
+      isbnPre,
+      description,
+      copies,
+      image
+    },config);
+    if(res.data.message === "book added successfully"){
+      nav('/view');
+      toast({
+        title: 'Book Added',
+        description: 'Book Added Successfully',
+        status: 'success',
+      });
+    }
+    else{
+      setError(res.message);
+    }
+  };
 
-  // const handleSubjectChange = (sub) => {
-  //     setSubjects((prev) => ({
-  //         ...prev,
-  //         [sub]: !prev[sub],
-  //     }));
-  // };
-  // const handleReset = () => {
-  //     // Reset all state variables here
-  //     setFirstName("");
-  //     setLastName("");
-  //     setSelectedOption("");
-  //     setAbout("");
-  // };
+  const handleImageChange =async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+
+        const { data } = await axios.post('/api/book/uploadImg', formData, config);
+
+        if (data.imageUrl) {
+            setImage(data.imageUrl);
+            console.log(data.imageUrl);
+        } else {
+            setError(data.error || 'Error uploading image');
+        }
+    } catch (error) {
+        setError(error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleImageClick = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   return (
     <div className="book">
-      <form action="" className="form_main">
+      <form className="form_main" onSubmit={handleSubmit} on>
+        {error && <div className="error">{error}</div>}
         <p className="heading">Add book details</p>
         <div className="inputContainer">
-          <input type="text" class="inputField" id="bookname" placeholder="Book name" />
+          <input
+            type="text"
+            className="inputField"
+            id="bookname"
+            placeholder="Book name"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </div>
         <div className="inputContainer">
-          <input type="text" class="inputField" id="authername" placeholder="Auther name" />
+          <input
+            type="text"
+            className="inputField"
+            id="authorname"
+            placeholder="Author name"
+            value={author}
+            onChange={(e) => setAuthorname(e.target.value)}
+          />
         </div>
         <div className="inputContainer">
-          <input type="text" class="inputField" id="typeofbook" placeholder="Genre" />
+          <input
+            type="text"
+            className="inputField"
+            id="typeofbook"
+            placeholder="Genre"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+          />
         </div>
         <div className="inputContainer">
-          <input type="text" class="inputField" id="isbnpre" placeholder="Isbn pre" />
+          <input
+            type="text"
+            className="inputField"
+            id="isbnpre"
+            placeholder="ISBN pre"
+            value={isbnPre}
+            onChange={(e) => setIsbnpre(e.target.value)}
+          />
         </div>
         <div className="inputContainer">
-          <input type="text" class="inputField" id="description" placeholder="Description" />
+          <input
+            type="text"
+            className="inputField"
+            id="description"
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="inputContainer">
+          <input
+            type="number"
+            className="inputField"
+            id="copies"
+            placeholder="No of copies"
+            value={copies}
+            onChange={(e) => setCopies(e.target.value)}
+          />
         </div>
         <div className="inputContainer">
           <form className="file-upload-form">
-            <label for="file" className="file-upload-label">
+            <label htmlFor="file" className="file-upload-label">
               <div className="file-upload-design">
                 <svg viewBox="0 0 680 512" height="1em">
                   <path
@@ -61,14 +159,29 @@ function Addbook(props) {
                 <p className="Parag">Drag and Drop &nbsp;&nbsp;or</p>
                 <span className="browse-button">Browse file</span>
               </div>
-              <input id="file" type="file" />
+              <input
+                id="file"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
             </label>
           </form>
         </div>
-        <p></p>
-        <div class="button-container">
-          <button className="button">Submit</button>
-          <button className="button">Cancel</button>
+        {image && (
+          <button type="button" className="button" onClick={handleImageClick}>
+            View Image
+          </button>
+        )}
+        {showPopup && (
+          <div className="popup">
+            <span className="close" onClick={handleClosePopup}>&times;</span>
+            <img src={image} alt="Uploaded" />
+          </div>
+        )}
+        <div className="button-container">
+          <button type="submit" className="button">Submit</button>
+          <button type="button" className="button" onClick={()=>nav('/home/')}>Cancel</button>
         </div>
       </form>
     </div>
