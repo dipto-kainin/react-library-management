@@ -1,10 +1,12 @@
 .book {
-  width: 80vh;
+  width: 80vw;
   margin: auto;
   background-color: rgb(34, 31, 33);
   border-radius: 25px;
   text-align: center;
   display: flex;
+  flex-direction: column;
+  row-gap: 10px;
   align-content: center;
   justify-content: center;
 }
@@ -14,6 +16,7 @@
   border: 2px solid violet;
   padding: 100px;
   border-radius: 25px;
+  row-gap: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,12 +34,14 @@
   color: #b563b0;
   font-weight: 500;
   margin: 5px 0 10px 0;
+  row-gap: 10px;
   z-index: 1;
 }
 
 .book .inputContainer {
   width: 100%;
   position: relative;
+  row-gap: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -213,4 +218,47 @@
   font-size: medium;
   font-weight: 100;
   width: 85px;
+}
+.appli-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.appli-list .cards {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.appli-list .cards .red {
+  background-color: #32343873;
+}
+
+.appli-list .cards .card {
+  padding: 0px 50px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  text-align: center;
+  gap: 30px;
+  height: 70px;
+  width: 1000px;
+  border-radius: 50px;
+  color: aquamarine;
+  cursor: pointer;
+  transition: 400ms transform, 400ms box-shadow, 400ms background-color;
+  box-shadow: 0 0 20px #FFFDE7;
+  align-items: center;
+}
+
+.appli-list .cards .card p.tip {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.appli-list .cards .card p.second-text {
+  font-size: 0.7em;
 }

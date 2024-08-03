@@ -71,7 +71,7 @@ function UserNavbar() {
                     <Avatar name={user?user.name:"user"} src={user?user.pic:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"} onClick={openForm}/>
                 </div>
                 {user?
-                (<div className="userinfo" id="myForm">
+                (<div className="userinfo" id="myForm" onMouseLeave={closeForm}>
                     <div className="card ">
                         <div className="card__border"></div>
                         <div className="card_title__container">
@@ -116,7 +116,7 @@ function UserNavbar() {
                         <button className="button" onClick={closeForm}>Close</button>
                     </div>
                 </div> ):
-                (<div className="userinfo" id="myForm">
+                (<div className="userinfo" id="myForm" onMouseLeave={closeForm}>
                     <div className="card ">
                         <div className="card__border"></div>
                         <div className="card_title__container">

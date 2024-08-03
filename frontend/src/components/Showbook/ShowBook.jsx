@@ -11,7 +11,6 @@ const Showbook = () => {
     const {user} = useContext(AuthContext);
     const nav= useNavigate();
     const handleClick = async (isbnPre)=>{
-        console.log(user);
         if(!user){
             nav(`/login`);
         }

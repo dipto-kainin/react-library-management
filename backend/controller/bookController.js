@@ -87,7 +87,7 @@ const fetchAll = expressAsyncHandler(async(req,res)=>{
     } catch(error){
         console.log(error);
     }
-})
+});
 
 //done by dipto
 const fetchBook=expressAsyncHandler(async(req, res) =>{
@@ -103,27 +103,56 @@ const fetchBook=expressAsyncHandler(async(req, res) =>{
             ]
         }
         const books = await Book.find(keywords)
-        .select('-isbn -borrowReq -returnReq');;
+        .select('-isbn -borrowReq -returnReq');
         if(!books){
             return res.status(404).json({error :"Books not found"})
         }
         return res.send({data:books})
-    } catch (error) {
-            console.log(error);
-            res.send({mas:"Some problem occured"})
+    } catch (err) {
+            console.log(err);
+            res.send({error:"Some problem occured"})
     }
-})
+});
+//done by dipto
+const adminFetchBook=expressAsyncHandler(async(req, res) =>{
+    if(req.user.role !== "Admin") return res.status(401).json({error:"you are not authorize to access this page"})
+    try {
+        const {search} = req.params;
+        console.log(search)
+        const keywords ={
+            $or: [
+                { title: { $regex: search, $options: "i" } },
+                { author: { $regex: search, $options: "i" } },
+                { genre: { $regex: search, $options: "i" } },
+                { isbnPre : search}
+            ]
+        }
+        const books = await Book.find(keywords)
+        .select('-borrowReq -returnReq')
+        .populate({
+            path:'isbn.borrowedBy',
+            select:'email'
+        });
+        if(!books){
+            return res.status(404).json({error :"Books not found"})
+        }
+        return res.send({data:books})
+    } catch (err) {
+            console.log(err);
+            res.send({error:"Some problem occured"})
+    }
+});
 //done by som
 const deleteBook = expressAsyncHandler(async(req, res) => {
-    if(req.user.role!=="user")
+    if(req.user.role==="user")
         return res.status(401).json({message:"You are not authorized to perform this action"});
     try {
-        let book = await Book.find({ isbnPre: req.body.isbnPre })
+        let book = await Book.find({ isbnPre: req.params.isbnPre })
         if (book.isbn.some(copy => copy.borrowedBy)) {
             return res.status(400).send("borrower exist cant delete");
         }
         else {
-            const result = await Book.delete({ isbnPre: req.body.isbnPre })
+            const result = await Book.delete({ isbnPre: req.params.isbnPre })
             return res.send(result).status(200);
         }
     } catch (err) {
@@ -133,10 +162,10 @@ const deleteBook = expressAsyncHandler(async(req, res) => {
 });
 //done by som
 const deleteSpecificCopy = expressAsyncHandler(async(req,res)=>{
-    if(req.user.role!=="user")
+    if(req.user.role === "user")
         return res.status(401).json({message:"You are not authorized to perform this action"});
     try{
-        const {isbnPre,id}=req.params;
+        const {isbnPre,id}=req.body;
         let result = await Book.updateOne({isbnPre: isbnPre},{$pull:{isbn:{$and:[{id:id},{borrowedBy:null}]}}})
         if(!result){
             return res.status(400).json({message:"Book not found or currently borrowed by"});
@@ -153,12 +182,12 @@ const updateBook = expressAsyncHandler(async(req,res)=>{
         const {title,author,genre,isbnPre,newIsbnPre} = req.body;
         const book=await Book.findOne({isbnPre});
         if(!book){
-            res.status(404).json({message:"Book not found"});
+            res.status(400).json({message:"Book not found"});
             return;
         }
         const isAnyCopyBorrowed = book.isbn.some(copy => copy.borrowedBy);
         if (isAnyCopyBorrowed) {
-            return res.status(400).json({ message: "Cannot update book details while a copy is borrowed" });
+            return res.status(200).json({ message: "Cannot update book details while a copy is borrowed" });
         }
         book.title = title || book.title;
         book.author = author || book.author;
@@ -174,7 +203,7 @@ const updateBook = expressAsyncHandler(async(req,res)=>{
         res.status(200).json({ message: "Book details updated successfully" });
     }
     else{
-        res.status(401).json({message:"You are not authorized to perform this action"});
+        res.status(500).json({message:"You are not authorized to perform this action"});
     }
 });
 //done by dipto
@@ -411,4 +440,4 @@ const uploadImg = expressAsyncHandler(async(req,res)=>{
         res.status(401).send("You are not authorized to view this page");
     }
 })
-module.exports={addBook,fetchBooks,fetchBook,fetchAll,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,uploadImg};
+module.exports={addBook,fetchBooks,fetchBook,adminFetchBook,fetchAll,deleteBook,deleteSpecificCopy,updateBook,borrowReq,borrowReqList,borrowReqCancel,borrowReqAccept,returnReq,returnReqList,returnReqCancel,returnBook,uploadImg};

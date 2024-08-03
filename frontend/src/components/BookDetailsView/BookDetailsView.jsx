@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookDetailsView.css';
 import { Box, Container, Image, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
+import { BookContext } from '../../context/bookContext';
 import axios from 'axios';
+import { AuthContext } from '../../context/UserContext';
 
 function Bookdetails() {
+   const {user} = useContext(AuthContext)
    const navigate = useNavigate();
    const [books, setBooks] = useState([]);
    const [error, setError] = useState(null);
@@ -12,6 +15,8 @@ function Bookdetails() {
    const [searchTerm, setSearchTerm] = useState('');
    const toast = useToast();
    const tableRef = useRef(null);
+   const [pressTimer, setPressTimer] = useState(null);
+   const {setSelectedBook} = useContext(BookContext);
 
    useEffect(() => {
       const fetchBooks = async () => {
@@ -41,6 +46,42 @@ function Bookdetails() {
       const index = books.findIndex(book => book.title.toLowerCase().includes(searchTerm.toLowerCase()) || book.isbnPre.includes(searchTerm));
       if (index !== -1 && tableRef.current) {
          tableRef.current.children[index].scrollIntoView({ behavior: 'smooth' });
+      }
+   };
+
+   const handleClick = async (isbnPre) => {
+      try{
+         const config = {
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+         }
+         const response = await axios.delete('/api/book/:isbnPre', config);
+
+      }catch(err){
+         toast({
+            title: 'Error',
+            description: err.message,
+            status: 'error',
+            isClosable:true,
+            duration:2000,
+         });
+      }
+   };
+
+   const handleHold = (isbnPre) => {
+      console.log(`Long press on book with isbnPre: ${isbnPre}`);
+   };
+
+   const startPressTimer = (isbnPre) => {
+      setPressTimer(setTimeout(() => handleHold(isbnPre), 1000));
+   };
+
+   const clearPressTimer = () => {
+      if (pressTimer) {
+         clearTimeout(pressTimer);
+         setPressTimer(null);
       }
    };
 
@@ -111,8 +152,20 @@ function Bookdetails() {
                                  </Td>
                                  <Td className="tick-cross">
                                     <div className="but-group">
-                                       <div><button id="btn-green" onClick={() => handleViewBook(book.isbnPre)}>View</button></div>
-                                       <div><button id="btn-red" onClick={""}>Delete</button></div>
+                                       <div>
+                                          <button id="btn-green" onClick={() => handleViewBook(book.isbnPre)}>View</button>
+                                       </div>
+                                       <div>
+                                          <button
+                                             id="btn-red"
+                                             onClick={() => handleClick(book.isbnPre)}
+                                             onMouseDown={() => startPressTimer(book.isbnPre)}
+                                             onMouseUp={clearPressTimer}
+                                             onMouseLeave={clearPressTimer}
+                                          >
+                                             Delete
+                                          </button>
+                                       </div>
                                     </div>
                                  </Td>
                               </Tr>
