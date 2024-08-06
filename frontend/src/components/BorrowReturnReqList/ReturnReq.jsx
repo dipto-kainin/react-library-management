@@ -52,6 +52,7 @@ const UserBorrowed = () => {
             }
         }
         const { data } = axios.post(`/api/book/returnBook`,{email,isbnPre},config);
+        console.log(data)
         if (data.message==="Book returned successfully") {
             alert("User has borrowed the book for: "+data.returned+" days");
             nav("/home/");

@@ -68,7 +68,7 @@ const fetchBooks = expressAsyncHandler(async (req, res) => {
             .limit(pageSize)
             .select('-isbn -borrowReq -returnReq');
         if (!books || books.length === 0) {
-            return res.status(404).json({ error: "Books not found" });
+            return res.status(200).json({ error: "Books not found" });
         }
         return res.send({ data: books });
     } catch (error) {
@@ -216,6 +216,9 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
                 res.status(404);
                 throw new Error("Book not found");
             }
+            if(book.borrowReq.some(id=> id.equals(req.user._id)) || book.isbn.some(copy => copy.borrowedBy.equal(req.user._id))){
+                return res.status(200).json({message:"You have already requested for borrow"});
+            }
             book.borrowReq.push(req.user._id);
             await book.save();
             res.status(200).json({
@@ -323,11 +326,15 @@ const borrowReqAccept = expressAsyncHandler(async(req,res)=>{
 });
 //done by dipto
 const returnReq = expressAsyncHandler(async(req,res)=>{
-    const {isbnPre}=req.body;
+    const {isbnid}=req.body;
     try{
+        const isbnPre=isbnid.split('-')[0];
         const book=await Book.findOne({isbnPre});
         if(!book){
             return res.status(404).json({message:"Book not found"});
+        }
+        if(book.returnReq.some(id=> id.equals(req.user._id))){
+            return res.status(200).json({message:"You have already requested for return"});
         }
         if(!book.isbn.find((copy)=> copy.borrowedBy?.toString() == req.user._id.toString())){
             return res.status(401).json({message:"you do not have the book"});
@@ -387,40 +394,54 @@ const returnReqList = expressAsyncHandler(async (req, res) => {
     }
 });
 //done by dipto
-const returnBook = expressAsyncHandler(async(req,res)=>{
-    if(req.user.role==="Admin" && req.body.userid){
-        const {isbnPre,email}=req.body;
-        const book=await Book.findOne({isbnPre});
-        const user=await User.findOne({email});
+const returnBook = expressAsyncHandler(async (req, res) => {
+    if (req.user.role === "Admin") {
+        const { isbnPre, email } = req.body;
+        const book = await Book.findOne({ isbnPre });
+        const user = await User.findOne({ email });
+
         if (!book) {
             return res.status(404).json({ message: "Book not found" });
         }
+
         const returnRequestIndex = book.returnReq.indexOf(user._id);
-        if (borrowRequestIndex === -1) {
+        if (returnRequestIndex === -1) {
             return res.status(404).json({ message: "Return request not found" });
         }
-        const exactCopy = book.isbn.find(copy => copy.borrowedBy==user._id);
+
+        console.log("User ID:", user._id);
+
+        const exactCopy = book.isbn.find(copy => {
+            console.log("Borrowed By:", copy.borrowedBy);
+            return copy.borrowedBy.equals(user._id);
+        });
+
         if (!exactCopy) {
             return res.status(404).json({ message: "Book copy not found" });
         }
+
         const borrowedAt = new Date(exactCopy.borrowedAt);
         const returnedAt = new Date();
         const timeDiff = returnedAt - borrowedAt;
         const daysBorrowed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        exactCopy.borrowedBy=null;
-        exactCopy.borrowedAt=null;
-        user.borrowedBook.splice(borrowedBook.indexOf(exactCopy.id),1);
+
+        exactCopy.borrowedBy = null;
+        exactCopy.borrowedAt = null;
+        user.borrowedBook.splice(user.borrowedBook.indexOf(exactCopy.id), 1);
         book.returnReq.splice(returnRequestIndex, 1);
-        book.save();
-        res.status(200).json({
+
+        await book.save();
+        await user.save();
+
+        return res.status(200).json({
             message: "Book returned successfully",
             returned: daysBorrowed
         });
-    }
-    else{
-        res.status(401).send("You are not authorized to view this page");
+    } else {
+        return res.status(401).send("You are not authorized to view this page");
     }
 });
+
 //done by dipto
 const uploadImg = expressAsyncHandler(async(req,res)=>{
     if(req.user.role==="Admin"){

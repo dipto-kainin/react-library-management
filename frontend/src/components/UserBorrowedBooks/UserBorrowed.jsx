@@ -41,16 +41,16 @@ const UserBorrowed = () => {
         getMyBorrowedBook();
     }, [user.token, hasFetched]);
 
-    const returnReq = async (isbnPre)=>{
+    const returnReq = async (isbnid)=>{
         const config = {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.token}`
             }
         }
-        const {data} = await axios.post('/api/book/returnReq/',{isbnPre},config);
+        const {data} = await axios.post('/api/book/returnReq/',{isbnid},config);
         console.log(data);
-        if(data.message === "return request sent successfully"){
+        if(data.message === 'return request updated successfully'){
             toast({
                 title: 'Return Request Sent',
                 description: 'Your return request has been sent to the library.',
@@ -114,7 +114,7 @@ const UserBorrowed = () => {
                                             <Image src={book.image} alt={book.title} boxSize="50px"/>
                                         </Td>
                                         <Td class="tick-cross">
-                                            <div><button id="btn-blue" onClick={()=>returnReq(book.isbnPre)}>Return?</button></div>
+                                            <div><button id="btn-blue" onClick={()=>returnReq(book.isbnid)}>Return?</button></div>
                                         </Td>
                                     </Tr>
                                 ))}
