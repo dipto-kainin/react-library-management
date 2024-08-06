@@ -3,6 +3,7 @@ import "./Signin.css";
 import { Link,useNavigate} from 'react-router-dom';
 import axios from "axios";
 import { AuthContext } from '../../context/UserContext';
+import {useToast} from '@chakra-ui/react'
 
 const Signin = () => {
     const [email, setEmail] = useState("");
@@ -10,6 +11,51 @@ const Signin = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const {login} = useContext(AuthContext);
+    const toast = useToast()
+    const handleforgot =async ()=>{
+        if(!email){
+            setError("Please enter your email");
+            return;
+        }
+        try{
+            console.log(email);
+            const  res = await axios.post('/api/user/forgot', {email});
+            const data = res.data;
+            console.log(data);
+            if(res.status === 400){
+                toast({
+                    title: "Email Not Found",
+                    description: "No account found with this email",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                })
+                return;
+            }
+            else if(res.status === 500){
+                toast({
+                    title: "Failed",
+                    description: "Failed to send the Email",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                })
+                return;
+            }
+            toast({
+                title: "Password Reset Link Sent",
+                description: "Check your email for password reset link",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+            })
+            navigate('/login');
+
+        }catch(err){
+            setError("Something went wrong")
+            console.log(err);
+        }
+    }
 
     const handleClick = async (e) => {
         e.preventDefault();
@@ -63,7 +109,7 @@ const Signin = () => {
                             <button className='Btn' type="submit">Log In</button>
                             <h4 style={{ fontSize: '1em' }}>Not registered yet? <Link to="/signup" style={{ color: 'turquoise' }}><b>Sign up</b></Link></h4>
                             <br />
-                            <h4 style={{ fontSize: '1em' }}>Forgot password? <Link to="/forgot" style={{ color: 'turquoise' }}><b>Login</b></Link></h4>
+                            <h4 style={{ fontSize: '1em' }}>Forgot password?<text onClick={()=>handleforgot()} style={{ color: 'turquoise',fontWeight:600, cursor:'pointer' }}>Login</text></h4>
                         </form>
                     </div>
                 </div>

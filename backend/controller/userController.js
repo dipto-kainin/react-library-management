@@ -2,10 +2,13 @@ const expressAsyncHandler = require("express-async-handler");
 const User = require("../model/userModel");
 const Book = require("../model/bookModel");
 const generateToken = require("../utils/generateToken");
-const transporter = require("../utils/mailSender");
+const nodemailer = require("nodemailer");
 const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
+const jwt = require("jsonwebtoken")
 const { storage } = require('../config/firebase');
 const { v4: uuidv4 } = require('uuid');
+const dotenv = require("dotenv");
+dotenv.config();
 
 //done by som
 const registerUser = expressAsyncHandler(async (req, res) => {
@@ -104,7 +107,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
         };
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "5m" });
         console.log(token);
-        const link = `http://localhost:3000/reset-pwd/${user._id}/${token};`
+        const link = `http://localhost:3000/resetPassword/${user._id}/${token};`
         console.log(link);
         const mailOptions = {
             from: process.env.EMAIL,
@@ -112,6 +115,15 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
             subject: 'Password Reset',
             text: `Please use the following link to reset your password: ${link}`
         };
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD
+            }
+        });
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);
@@ -123,18 +135,21 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
         });
     }
     catch (err) {
-        res.send(500).json(err);
+        console.log(err)
+        res.status(500).json(err);
     }
 });
 //done by sudipta
 const resetPassword = expressAsyncHandler(async (req, res) => {
-    const { email, newPassword } = req.body;
-    const { token } = req.params;
+    const { newPassword } = req.body;
+    const { id ,  token } = req.params;
     try {
-        const user = await User.findOne({ email: email });
+        const user = await User.findById(id);
         if (!user) return res.status(400).json("User not found!");
         const verify = jwt.verify(token, process.env.JWT_SECRET);
         if (!verify) return res.status(400).json("Invalid token");
+        if(verify!==user.email)
+            return res.status(400).json("Invalid email");
         user.password = newPassword
         await user.save();
         res.status(200).json({ message: "Password reset successfully" });
