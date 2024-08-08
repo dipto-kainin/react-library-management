@@ -216,7 +216,7 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
                 res.status(404);
                 throw new Error("Book not found");
             }
-            if(book.borrowReq.some(id=> id.equals(req.user._id)) || book.isbn.some(copy => copy.borrowedBy.equal(req.user._id))){
+            if(book.borrowReq.some(id=> (id.toString()==req.user._id.toString())) || book.isbn.some(copy => copy.borrowedBy.toString()==req.user._id.toString())){
                 return res.status(200).json({message:"You have already requested for borrow"});
             }
             book.borrowReq.push(req.user._id);
@@ -333,7 +333,7 @@ const returnReq = expressAsyncHandler(async(req,res)=>{
         if(!book){
             return res.status(404).json({message:"Book not found"});
         }
-        if(book.returnReq.some(id=> id.equals(req.user._id))){
+        if(book.returnReq.some(id=> id.toString()==req.user._id.toString())){
             return res.status(200).json({message:"You have already requested for return"});
         }
         if(!book.isbn.find((copy)=> copy.borrowedBy?.toString() == req.user._id.toString())){
