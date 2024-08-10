@@ -147,14 +147,17 @@ const deleteBook = expressAsyncHandler(async(req, res) => {
     if(req.user.role==="user")
         return res.status(401).json({message:"You are not authorized to perform this action"});
     try {
-        let book = await Book.find({ isbnPre: req.params.isbnPre })
+        let book = await Book.findOne({ isbnPre: req.params.isbnPre });
+        if (!book) {
+            return res.status(404).json({ message: "Book not found" });
+        }
         if (book.isbn.some(copy => copy.borrowedBy)) {
             return res.status(400).send("borrower exist cant delete");
         }
-        else {
-            const result = await Book.delete({ isbnPre: req.params.isbnPre })
-            return res.send(result).status(200);
-        }
+        const name = book.title;
+        console.log(name);
+        await Book.delete({ isbnPre: req.params.isbnPre })
+        return res.json({message : `${name} book has been deleted`}).status(200);
     } catch (err) {
         console.log(err);
         return res.send("err");
@@ -317,7 +320,7 @@ const borrowReqAccept = expressAsyncHandler(async(req,res)=>{
         await book.save();
         await user.save();
         res.status(200).json({
-            message: "Book borrow request accepted and assigned successfully"
+            message: `'${book.title}' with '${availableCopy.id}' assigned successfully to user named '${user.name}'`
         });
     }
     else{

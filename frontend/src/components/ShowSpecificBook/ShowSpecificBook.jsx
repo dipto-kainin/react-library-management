@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import "./showspecificbook.css";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../../context/UserContext';
 import axios from 'axios';
+import {useToast} from '@chakra-ui/react'
 
 
 function ShowSpecificBook() {
     const [Book, setBook] = useState({});
     const {user}=useContext(AuthContext);
     const { isbnPre } = useParams();
+    const nav = useNavigate();
+    const toast = useToast();
 
     useEffect(()=>{
         const fetchBooks = async () => {
@@ -32,7 +35,13 @@ function ShowSpecificBook() {
         axios.post(`/api/book/borrowReq`,{isbnPre},config)
         .then(res=>{
             console.log(res);
-            //alert(res.data.message);
+            toast({
+                title: res.data.message,
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            });
+            nav('/home/1');
         });
     }
 

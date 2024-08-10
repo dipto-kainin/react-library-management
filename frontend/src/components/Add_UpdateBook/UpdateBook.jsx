@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './Add_UpdateBook.css'
 import { Container, Textarea, useToast } from '@chakra-ui/react';
-import { BookContext } from "../../context/bookContext";
 import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
 import { useParams } from 'react-router-dom';
@@ -9,8 +8,7 @@ import { useParams } from 'react-router-dom';
 function Update() {
     const { user } = useContext(AuthContext);
     const {isbnPre} = useParams()
-    const { selectedBook, updateBook } = useContext(BookContext);
-    const [currBook, setCurrBook] = useState(selectedBook);
+    const [currBook, setCurrBook] = useState();
     const [error, setError] = useState(null);
     const toast = useToast();
     const [hasFetched,setHasFetched] = useState(false);

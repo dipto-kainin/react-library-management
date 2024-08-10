@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BookDetailsView.css';
 import { Box, Container, Image, Table, Tbody, Td, Text, Th, Thead, Tr, useToast } from '@chakra-ui/react';
-import { BookContext } from '../../context/bookContext';
 import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
 
@@ -16,7 +15,6 @@ function Bookdetails() {
    const toast = useToast();
    const tableRef = useRef(null);
    const [pressTimer, setPressTimer] = useState(null);
-   const {setSelectedBook} = useContext(BookContext);
 
    useEffect(() => {
       const fetchBooks = async () => {
@@ -54,10 +52,18 @@ function Bookdetails() {
          const config = {
             headers: {
                'Content-Type': 'application/json',
-               'Authorization': 'Bearer ' + localStorage.getItem('token')
+               Authorization: `Bearer ${user.token}`
             }
          }
-         const response = await axios.delete('/api/book/:isbnPre', config);
+         const response = await axios.delete(`/api/book/deleteBook/${isbnPre}`, config);
+         toast({
+            title: 'Success',
+            description: response.data.message,
+            status:'success',
+            isClosable:true,
+            duration:2000,
+         });
+         setBooks(books.filter(book => book.isbnPre!== isbnPre));
 
       }catch(err){
          toast({

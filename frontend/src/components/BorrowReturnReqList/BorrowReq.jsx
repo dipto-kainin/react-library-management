@@ -24,9 +24,9 @@ function BorrowBookReqList() {
         toast({
             title: data.message,
             status: "success",
-            duration: 2000,
             isClosable: true,
         });
+        setBooks(books.filter((_, i) => i!==index));
         } catch (error) {
             toast({
                 title: error,

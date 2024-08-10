@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
-import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 
@@ -13,7 +12,6 @@ const UserBorrowed = () => {
     const [loading, setLoading] = useState(true);
     const [hasFetched, setHasFetched] = useState(false);
     const toast = useToast();
-    const nav = useNavigate();
 
     useEffect(() => {
         async function fetchReturnReqList() {
@@ -44,18 +42,18 @@ const UserBorrowed = () => {
         if (!hasFetched)
             fetchReturnReqList();
     });
-    const handleReqAccept=(email,isbnPre)=>{
+    const handleReqAccept=(index,email,isbnPre)=>{
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
+                Authorization: `Bearer ${user.token}`
             }
         }
         const { data } = axios.post(`/api/book/returnBook`,{email,isbnPre},config);
         console.log(data)
         if (data.message==="Book returned successfully") {
             alert("User has borrowed the book for: "+data.returned+" days");
-            nav("/home/");
+            setReturnReqBooks(returnReqBooks.filter((_, i) => i!==index))
         }
         else{
             alert(data.message);
@@ -131,7 +129,7 @@ const UserBorrowed = () => {
 
                                         <Td class="tick-cross">
                                             <div className="but-group">
-                                                <div><button id="btn-green" onClick={()=>handleReqAccept(book.returnReq.email,book.isbnPre)}>Accept</button></div>
+                                                <div><button id="btn-green" onClick={()=>handleReqAccept(index,book.returnReq.email,book.isbnPre)}>Accept</button></div>
                                                 <div><button id="btn-red" onClick={()=>handleReqCancel(book.isbnPre,book.returnReq.userId)}>Cancel</button></div>
                                             </div>
                                         </Td>
