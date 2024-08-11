@@ -251,7 +251,7 @@ function Update() {
                                         <p className="tip">{item.id}</p>
                                     </div>
                                     <div>
-                                        <p className="tip">{item.borrowedBy?.email || "Not Borrowed"}{item.borrowedBy?.email || <MdDelete onClick={()=>handleDelete(item.id, currBook.isbnPre, index)}/>}</p>
+                                        <p className="tip">{item.borrowedBy?.email || "Not Borrowed"}{item.borrowedBy?.email || <button className='btn-red' onClick={()=>handleDelete(item.id, currBook.isbnPre, index)}><MdDelete/>Delete</button>}</p>
                                     </div>
                                     <div>
                                         <p className="tip">{item.borrowedAt || "Not Borrowed yet"}</p>
