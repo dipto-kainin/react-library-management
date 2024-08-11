@@ -12,7 +12,7 @@ router.get("/fetchAll",fetchAll);
 router.get("/fetchBook/:search",fetchBook);
 router.get("/adminFetchBook/:search",protected,adminFetchBook);
 router.delete("/deleteBook/:isbnPre",protected,deleteBook);
-router.delete("/deleteSpecificCopy/",protected,deleteSpecificCopy);
+router.post("/deleteSpecificCopy/",protected,deleteSpecificCopy);
 router.post("/updateBook",protected,updateBook);
 router.route("/borrowReq").post(protected,borrowReq);
 router.route("/borrowReqList").get(protected,borrowReqList);

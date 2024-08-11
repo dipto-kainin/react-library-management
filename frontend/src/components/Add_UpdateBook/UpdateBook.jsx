@@ -3,7 +3,8 @@ import './Add_UpdateBook.css'
 import { Container, Textarea, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { MdDelete } from "react-icons/md";
 
 function Update() {
     const { user } = useContext(AuthContext);
@@ -11,6 +12,7 @@ function Update() {
     const [currBook, setCurrBook] = useState();
     const [error, setError] = useState(null);
     const toast = useToast();
+    const navigate=useNavigate();
     const [hasFetched,setHasFetched] = useState(false);
 
     useEffect(()=>{
@@ -43,6 +45,42 @@ function Update() {
         if(!hasFetched)
             bookdata();
     })
+
+
+    const handleDelete=async(id, isbnPre, index)=>{
+        try{
+            const config = {
+                headers: {
+                   'Content-Type': 'application/json',
+                   Authorization: `Bearer ${user.token}`
+                }
+             }
+            
+            const response=await axios.post("/api/book/deleteSpecificCopy",{isbnPre, id}, config);
+            console.log(response);
+            
+            //console.log(currBook);
+            //currBook.isbn.splice(index, 1);
+            
+            
+            if(response.data.message==="Successfully deleted copy")
+            {
+                toast({
+                    title: `This copy is deleted successfully with id ${id}`,
+                    description:response.message,
+                    status: 'success',
+                    isClosable: true,
+                    duration:3000
+                });
+                window.location.reload();
+                //navigate(`/book/${isbnPre}`);
+            }
+        }
+        catch(error)
+        {
+            console.log(error); 
+        }
+    }
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
@@ -205,10 +243,10 @@ function Update() {
                                         <p className="tip">{item.id}</p>
                                     </div>
                                     <div>
-                                        <p className="tip">{item.borrowedBy?.email || "Not Borrowed"}</p>
+                                        <p className="tip">{item.borrowedBy?.email || "Not Borrowed"}{item.borrowedBy?.email || <MdDelete onClick={()=>handleDelete(item.id, currBook.isbnPre, index)}/>}</p>
                                     </div>
                                     <div>
-                                        <p className="tip">{item.borrowedAt || "Not Borrowed"}</p>
+                                        <p className="tip">{item.borrowedAt || "Not Borrowed yet"}</p>
                                     </div>
                                 </div>
                             )
@@ -220,4 +258,4 @@ function Update() {
     );
 }
 
-export default Update;
+export default Update;

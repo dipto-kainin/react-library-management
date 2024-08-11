@@ -16,6 +16,8 @@ import UserDetailsSearch from './components/AdminSearchPanel/UserDetailsSearch';
 import BookDetailsView from './components/BookDetailsView/BookDetailsView'
 import UpdateBook from './components/Add_UpdateBook/UpdateBook'
 import AddBook from './components/Add_UpdateBook/AddBook'
+import GetStarted from './components/GetStarted/GetStarted'
+
 
 function HomeWithRedirect() {
   const { pageNo } = useParams();
@@ -51,6 +53,7 @@ function App() {
             <UserNavbar />
             <div className="inside">
               <Routes>
+                <Route path="/" element={<GetStarted/>}/>
                 <Route path="/home/:pageNo" element={<HomeWithRedirect />} />
                 <Route path="/login" element={<Signin />} exact />
                 <Route path="/signup" element={<SignUp />} exact />
