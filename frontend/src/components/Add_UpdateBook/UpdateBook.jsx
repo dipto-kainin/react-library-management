@@ -5,6 +5,7 @@ import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
+import GetStarted from '../GetStarted/GetStarted';
 
 function Update() {
     const { user } = useContext(AuthContext);
@@ -46,6 +47,11 @@ function Update() {
             bookdata();
     })
 
+
+    const handleBack=(e)=>{
+        e.preventDefault();
+        navigate('/allBooks');
+    }
 
     const handleDelete=async(id, isbnPre, index)=>{
         try{
@@ -107,6 +113,8 @@ function Update() {
             setError(error.response?.data?.message || error.message);
         }
     };
+
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -226,7 +234,7 @@ function Update() {
                     />
                 </div>
                 <div className="button-container">
-                    <button type="button" className="button">Back</button>
+                    <button type="button" className="button" onClick={(e)=>handleBack(e)}>Back</button>
                     <button type="submit" className="button">Update</button>
                 </div>
             </form>

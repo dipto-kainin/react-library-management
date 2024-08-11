@@ -257,8 +257,18 @@
 .appli-list .cards .card p.tip {
   font-size: 1em;
   font-weight: 700;
+  display: flex;
+  flex-direction: column;
 }
 
 .appli-list .cards .card p.second-text {
   font-size: 0.7em;
+}
+
+
+.appli-list .cards .btn-red{
+    color: rgb(255, 255, 255);
+    background-color: rgb(200, 16, 16);
+    border: 1px solid rgb(255, 255, 255);
+    size: 20px;
 }
