@@ -5,7 +5,6 @@ import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MdDelete } from "react-icons/md";
-import GetStarted from '../GetStarted/GetStarted';
 
 function Update() {
     const { user } = useContext(AuthContext);

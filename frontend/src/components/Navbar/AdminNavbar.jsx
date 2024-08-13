@@ -35,7 +35,7 @@ function AdminNavbar() {
 
     const handleLogout = () => {
         logout();
-        navigate('/home/');
+        navigate('/home/1');
     }
 
     return (

@@ -107,7 +107,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
         };
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "5m" });
         console.log(token);
-        const link = `http://localhost:3000/resetPassword/${user._id}/${token};`
+        const link = `${process.env.FRONTEND}/resetPassword/${user._id}/${token};`
         console.log(link);
         const mailOptions = {
             from: process.env.EMAIL,
@@ -141,24 +141,35 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
 });
 //done by sudipta
 const resetPassword = expressAsyncHandler(async (req, res) => {
-    const { newPassword } = req.body;
-    const { id ,  token } = req.params;
+    const { password } = req.body;
+    const { id, token } = req.params;
+    
     try {
         const user = await User.findById(id);
-        if (!user) return res.status(400).json("User not found!");
+        if (!user) return res.status(404).json("User not found!");
+
         const verify = jwt.verify(token, process.env.JWT_SECRET);
-        if (!verify) return res.status(400).json("Invalid token");
-        if(verify!==user.email)
-            return res.status(400).json("Invalid email");
-        user.password = newPassword
+        if (!verify) return res.status(401).json("Invalid token");
+
+        if (verify.user.email !== user.email)
+            return res.status(400).json("Invalid user");
+
+        user.password = password;
         await user.save();
+
         res.status(200).json({ message: "Password reset successfully" });
-    }
-    catch (err) {
-        console.log(err);
-        res.status(400).json({ message: errorMessage, error: err });
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            res.status(401).json({ message: "Token has expired" });
+        } else if (err.name === 'JsonWebTokenError') {
+            res.status(401).json({ message: "Invalid token" });
+        } else {
+            console.error(err);
+            res.status(500).json({ message: "Internal server error", error: err.message });
+        }
     }
 });
+
 //done by dipto
 const userBorrowedBook = expressAsyncHandler(async (req, res) => {
     try {

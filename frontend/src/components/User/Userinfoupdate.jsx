@@ -83,7 +83,7 @@ const UserInfo = () => {
         <div className='UserInfo'>
             <section>
                 <div className="form-boxR">
-                    <h1>{isUpdated && <>Update</>} User Information</h1>
+                    <h1>{isUpdated && <>Update</>} {currUser.role} Information</h1>
                     <div className="form-valueR">
                         <form className='Register' onSubmit={handleSubmit}>
                             {error && <div className="error">{error}</div>}
@@ -131,7 +131,7 @@ const UserInfo = () => {
                                 {isUpdated && <label>Address</label>}
                             </div>
                             <div className="CheckBox">
-                                <p>Update User Info?</p>
+                                <p>Update {currUser.role} Info?</p>
                                 <input
                                     type="checkbox"
                                     className="switch"

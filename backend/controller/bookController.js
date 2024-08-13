@@ -224,11 +224,10 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
             console.log(book.borrowReq.some(id=> (id.toString()==req.user._id.toString())));
             
             
-            // if(!book.borrowReq || book.borrowReq.some(id=> (id.toString()==req.user._id.toString())) || book.isbn.some(copy => copy.borrowedBy.toString()==req.user._id.toString()) || book.isbn.length!=0){
-            //     return res.status(200).json({message:"You have already requested for borrow"});
-            // }
+             if((book.borrowReq.length!=0 && book.borrowReq.some(id=> id.toString()==req.user._id.toString())) || book.isbn.some(copy => (copy.borrowedBy && copy.borrowedBy.toString()==req.user._id.toString()))){
+                return res.status(200).json({message:"You have already requested for borrow"});
+             }
             book.borrowReq.push(req.user._id);
-            console.log("Hi1");
             
             await book.save();
             res.status(200).json({

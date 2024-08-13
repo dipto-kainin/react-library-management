@@ -17,6 +17,7 @@ import BookDetailsView from './components/BookDetailsView/BookDetailsView'
 import UpdateBook from './components/Add_UpdateBook/UpdateBook'
 import AddBook from './components/Add_UpdateBook/AddBook'
 import GetStarted from './components/GetStarted/GetStarted'
+import ResetPassword from './components/ForgotPassword/ResetPassword'
 
 
 function HomeWithRedirect() {
@@ -41,6 +42,7 @@ function App() {
             <Routes>
               <Route path={"/"} element={<AdminPortal/>}/>
               <Route path="/home/*" element={<Navigate to="/" />} />
+              <Route path="/user/" element={user && <UserInfo />} exact />
               <Route path="/search" element={<UserDetailsSearch/>} />
               <Route path="/allBooks" element={<BookDetailsView/>} />
               <Route path="/book/:isbnPre" element={<UpdateBook/>} />
@@ -65,6 +67,7 @@ function App() {
                   element={<ShowSpecificBook />}
                   exact
                 />
+                <Route path="/resetPassword/:id/:token" element={<ResetPassword/>}/>
               </Routes>
             </div>
           </BrowserRouter>
