@@ -72,8 +72,7 @@ const fetchBooks = expressAsyncHandler(async (req, res) => {
         }
         return res.send({ data: books });
     } catch (error) {
-        console.log(error);
-        res.status(500).send({ msg: "Some problem occurred" });
+        res.status(500).send({ msg: error.message });
     }
 });
 
@@ -85,7 +84,7 @@ const fetchAll = expressAsyncHandler(async(req,res)=>{
         }
         return res.send({data:books});
     } catch(error){
-        console.log(error);
+        return res.json(error).status(500);
     }
 });
 
@@ -93,7 +92,6 @@ const fetchAll = expressAsyncHandler(async(req,res)=>{
 const fetchBook=expressAsyncHandler(async(req, res) =>{
     try {
         const {search} = req.params;
-        console.log(search)
         const keywords ={
             $or: [
                 { title: { $regex: search, $options: "i" } },
@@ -109,8 +107,7 @@ const fetchBook=expressAsyncHandler(async(req, res) =>{
         }
         return res.send({data:books})
     } catch (err) {
-            console.log(err);
-            res.send({error:"Some problem occured"})
+            res.send({error:error.message})
     }
 });
 //done by dipto
@@ -118,7 +115,6 @@ const adminFetchBook=expressAsyncHandler(async(req, res) =>{
     if(req.user.role !== "Admin") return res.status(401).json({error:"you are not authorize to access this page"})
     try {
         const {search} = req.params;
-        console.log(search)
         const keywords ={
             $or: [
                 { title: { $regex: search, $options: "i" } },
@@ -138,8 +134,7 @@ const adminFetchBook=expressAsyncHandler(async(req, res) =>{
         }
         return res.send({data:books})
     } catch (err) {
-            console.log(err);
-            res.send({error:"Some problem occured"})
+            res.send({error:err.message})
     }
 });
 //done by som
@@ -155,12 +150,10 @@ const deleteBook = expressAsyncHandler(async(req, res) => {
             return res.status(400).send("borrower exist cant delete");
         }
         const name = book.title;
-        console.log(name);
         await Book.deleteOne({isbnPre: book.isbnPre})
         return res.json({message : `${name} book has been deleted`}).status(200);
     } catch (err) {
-        console.log(err);
-        return res.send("err");
+        return res.json({message : err.message});
     }
 });
 //done by som
@@ -173,7 +166,6 @@ const deleteSpecificCopy = expressAsyncHandler(async(req,res)=>{
         if(!result){
             return res.status(400).json({message:"Book not found or currently borrowed by"});
         }
-        console.log(result);
         return res.json({message:"Successfully deleted copy"}).status(200);
     }
     catch(err){
@@ -220,15 +212,10 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
                 res.status(404);
                 throw new Error("Book not found");
             }
-            console.log("Hi");
-            console.log(book.borrowReq.some(id=> (id.toString()==req.user._id.toString())));
-            
-            
-             if((book.borrowReq.length!=0 && book.borrowReq.some(id=> id.toString()==req.user._id.toString())) || book.isbn.some(copy => (copy.borrowedBy && copy.borrowedBy.toString()==req.user._id.toString()))){
+            if((book.borrowReq.length!=0 && book.borrowReq.some(id=> id.toString()==req.user._id.toString())) || book.isbn.some(copy => (copy.borrowedBy && copy.borrowedBy.toString()==req.user._id.toString()))){
                 return res.status(200).json({message:"You have already requested for borrow"});
-             }
+            }
             book.borrowReq.push(req.user._id);
-            
             await book.save();
             res.status(200).json({
                 message: "book borrow requested successfully"
@@ -239,8 +226,6 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
         }
     } catch (error) {
         res.status(500).json({message:"some error occured",error});
-        console.log(error);
-        
     }
 });
 //done by dipto
@@ -420,10 +405,7 @@ const returnBook = expressAsyncHandler(async (req, res) => {
             return res.status(404).json({ message: "Return request not found" });
         }
 
-        console.log("User ID:", user._id);
-
         const exactCopy = book.isbn.find(copy => {
-            console.log("Borrowed By:", copy.borrowedBy);
             return copy.borrowedBy.equals(user._id);
         });
 

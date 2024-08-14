@@ -37,7 +37,6 @@ const UserBorrowed = () => {
                 });
                 setReturnReqBooks([]);
             }
-            console.log(data);
         }
         if (!hasFetched)
             fetchReturnReqList();
@@ -50,7 +49,6 @@ const UserBorrowed = () => {
             }
         }
         const { data } = axios.post(`/api/book/returnBook`,{email,isbnPre},config);
-        console.log(data)
         if (data.message==="Book returned successfully") {
             alert("User has borrowed the book for: "+data.returned+" days");
             setReturnReqBooks(returnReqBooks.filter((_, i) => i!==index))

@@ -3,14 +3,15 @@ import './UserDetailsSearch.css'
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
 import {AuthContext} from '../../context/UserContext'
+import { useToast } from '@chakra-ui/react';
 
 function UserDetailsSearch() {
     const [search, setSearch] = useState("");
     const [result, setResult] = useState([]);
     const {user}=useContext(AuthContext);
+    const toast = useToast()
 
     const handleSearch = async () => {
-        //e.preventDefault();
         if (search) {
             const encodedSearch = encodeURIComponent(search);
             const config ={
@@ -21,23 +22,32 @@ function UserDetailsSearch() {
             }
             axios.get(`api/user/search/${encodedSearch}`, config)
                 .then(res => {
-                    //console.log(res.data);
                     if (res.data) {
                         setResult(res.data);
                     }
                 })
-                .catch(err => console.log(err));
+                .catch(err =>
+                {
+                    toast({
+                        title: "Error",
+                        status: "error",
+                        duration: 2000,
+                        isClosable: true,
+                    })
+                    setResult([]);
+                }
+                );
         }
         else {
-            //alert("Please enter something");
+            setResult([]);
+            toast({
+                title: "Search Results",
+                status: "success",
+                duration: 2000,
+                isClosable: true,
+            })
         }
     };
-
-    useEffect(() => {
-        if (result) {
-            console.log(result);
-        }
-    }, [result]);
 
     return (
         <div className="userSearchAdmin">

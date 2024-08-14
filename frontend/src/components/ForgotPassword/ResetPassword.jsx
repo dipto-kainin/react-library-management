@@ -35,7 +35,6 @@ const ResetPassword = () => {
                 duration:2000
             })
             setError(error);
-            console.log(error);
         } finally{
             toast({
                 title:'Auto closing tab',

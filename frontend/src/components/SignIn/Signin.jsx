@@ -18,10 +18,7 @@ const Signin = () => {
             return;
         }
         try{
-            console.log(email);
             const  res = await axios.post('/api/user/forgot', {email});
-            const data = res.data;
-            console.log(data);
             if(res.status === 400){
                 toast({
                     title: "Email Not Found",
@@ -53,7 +50,6 @@ const Signin = () => {
 
         }catch(err){
             setError("Something went wrong")
-            console.log(err);
         }
     }
 
@@ -69,17 +65,14 @@ const Signin = () => {
                     'Content-Type': 'application/json'
                 },
             };
-            console.log(email,password);
             const { data } = await axios.post('/api/user/login/', {email,password}, config);
             if(data.email===email){
                 login(data);
-                console.log(data);
                 navigate('/home/1');
             }
             setError(null);
         } catch (error) {
             setError("Invalid email or password");
-            console.log(error);
         }
     };
 

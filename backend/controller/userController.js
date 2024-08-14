@@ -13,7 +13,6 @@ dotenv.config();
 //done by som
 const registerUser = expressAsyncHandler(async (req, res) => {
     const { name, email, password, address, pic } = req.body;
-    console.log(email);
     if (!name || !email || !address || !password) {
         res.status(400);
         throw new Error("Please add all fields");
@@ -60,7 +59,6 @@ const updateUser = expressAsyncHandler(async (req, res) => {
         if (req.user._id) {
             const { name, email, address, pic, newPassword, oldPassword } = req.body;
             const user = await User.findOne({ _id: req.user._id });
-            console.log(pic);
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
@@ -106,9 +104,7 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
             }
         };
         const token = jwt.sign(data, process.env.JWT_SECRET, { expiresIn: "5m" });
-        console.log(token);
-        const link = `${process.env.FRONTEND}/resetPassword/${user._id}/${token};`
-        console.log(link);
+        const link = `${process.env.FRONTEND}/resetPassword/${user._id}/${token}`
         const mailOptions = {
             from: process.env.EMAIL,
             to: user.email,
@@ -126,17 +122,14 @@ const forgotPassword = expressAsyncHandler(async (req, res) => {
         });
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.log(error);
                 return res.status(500).json({ message: "Failed to send email", error });
             } else {
-                console.log('Email sent: ' + info.response);
-                res.status(200).json({ message: 'Token sent to email!' });
+                return res.status(200).json({ message: 'Token sent to email!' });
             }
         });
     }
     catch (err) {
-        console.log(err)
-        res.status(500).json(err);
+        res.status(500).json(err.message);
     }
 });
 //done by sudipta
@@ -194,7 +187,6 @@ const userBorrowedBook = expressAsyncHandler(async (req, res) => {
                     image: book.image
                 };
             }));
-            console.log(borrowedBooks);
             res.status(200).json(borrowedBooks);
         } else {
             res.status(400).json({ message: "User not found!" });
@@ -209,7 +201,6 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
     try {
         if (req.user.role !== "user") {
             const { searchitem } = req.params;
-            //console.log(searchitem)
             const keywords = {
                 $or: [
                     { name: { $regex: searchitem, $options: "i" } },
@@ -220,9 +211,7 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
             if (!user) {
                 return res.status(404).json({ error: "User not found" })
             }
-            //console.log(user);
             const userBorrowed = user.borrowedBook;
-            //console.log(userBorrowed);
             if (!Array.isArray(userBorrowed) || userBorrowed.length === 0) {
                 return res.status(200).json({ data: user, message: "No books borrowed yet!" });
             }
@@ -239,8 +228,7 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
         }
     }
     catch (error) {
-        console.log(error);
-        res.send({ mas: "Some problem occured" })
+        res.send({ mas: error.message })
     }
 });
 //done by dipto

@@ -14,13 +14,11 @@ function Bookdetails() {
    const [searchTerm, setSearchTerm] = useState('');
    const toast = useToast();
    const tableRef = useRef(null);
-   const [pressTimer, setPressTimer] = useState(null);
 
    useEffect(() => {
       const fetchBooks = async () => {
          try {
             const { data } = await axios.get('/api/book/fetchAll');
-            console.log(data.data);
             if (data.error) {
                setError(data.error);
             } else {
@@ -73,21 +71,6 @@ function Bookdetails() {
             isClosable:true,
             duration:2000,
          });
-      }
-   };
-
-   const handleHold = (isbnPre) => {
-      console.log(`Long press on book with isbnPre: ${isbnPre}`);
-   };
-
-   const startPressTimer = (isbnPre) => {
-      setPressTimer(setTimeout(() => handleHold(isbnPre), 1000));
-   };
-
-   const clearPressTimer = () => {
-      if (pressTimer) {
-         clearTimeout(pressTimer);
-         setPressTimer(null);
       }
    };
 
@@ -165,9 +148,6 @@ function Bookdetails() {
                                           <button
                                              id="btn-red"
                                              onClick={() => handleClick(book.isbnPre)}
-                                             onMouseDown={() => startPressTimer(book.isbnPre)}
-                                             onMouseUp={clearPressTimer}
-                                             onMouseLeave={clearPressTimer}
                                           >
                                              Delete
                                           </button>

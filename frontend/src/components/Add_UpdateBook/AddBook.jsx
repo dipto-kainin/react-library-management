@@ -65,7 +65,6 @@ function Addbook(props) {
 
         if (data.imageUrl) {
             setImage(data.imageUrl);
-            console.log(data.imageUrl);
         } else {
             setError(data.error || 'Error uploading image');
         }

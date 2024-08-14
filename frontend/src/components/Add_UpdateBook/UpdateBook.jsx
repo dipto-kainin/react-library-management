@@ -39,7 +39,13 @@ function Update() {
                 }
                 setHasFetched(true);
             }catch(err){
-                console.log(err);
+                toast({
+                    title: 'Error',
+                    description: err.message,
+                    status: 'error',
+                    duration: 2000,
+                    isClosable:true
+                })
             }
         }
         if(!hasFetched)
@@ -59,15 +65,8 @@ function Update() {
                    'Content-Type': 'application/json',
                    Authorization: `Bearer ${user.token}`
                 }
-             }
-            
+            }
             const response=await axios.post("/api/book/deleteSpecificCopy",{isbnPre, id}, config);
-            console.log(response);
-            
-            //console.log(currBook);
-            //currBook.isbn.splice(index, 1);
-            
-            
             if(response.data.message==="Successfully deleted copy")
             {
                 toast({
@@ -78,12 +77,16 @@ function Update() {
                     duration:3000
                 });
                 window.location.reload();
-                //navigate(`/book/${isbnPre}`);
             }
         }
         catch(error)
         {
-            console.log(error); 
+            toast({
+                title:'Error',
+                status:'error',
+                description : error.message,
+                isClosable:true,
+            })
         }
     }
 
@@ -104,16 +107,13 @@ function Update() {
 
             if (data.imageUrl) {
                 setCurrBook({ ...currBook, image: data.imageUrl });
-                console.log(data.imageUrl);
             } else {
                 setError(data.error || 'Error uploading image');
             }
         } catch (error) {
             setError(error.response?.data?.message || error.message);
         }
-    };
-
-    
+    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;

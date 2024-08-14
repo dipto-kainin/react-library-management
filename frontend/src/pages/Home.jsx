@@ -31,9 +31,15 @@ const Home = () => {
                 {
                     setBooks(response.data.data);
                 }
-                console.log(response.data.data)
             } catch (err) {
-                console.log(err);
+                toast({
+                    title: 'Error',
+                    description: err.message,
+                    status: 'error',
+                    isClosable:true,
+                    duration: 2000,
+                    isCloseButtonVisible: true,
+                })
             }
         };
         fetchBooks();

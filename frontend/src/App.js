@@ -32,7 +32,6 @@ function HomeWithRedirect() {
 
 function App() {
   const {user}=useContext(AuthContext);
-  console.log(user);
   return (
     <div className="App">
         {user && user.role==="Admin" ? (

@@ -22,7 +22,6 @@ const UserInfo = () => {
 
     const handleCheckboxChange = () => {
         setIsUpdated(!isUpdated);
-        console.log(currUser);
     };
 
     const handleImageChange = async (e) => {
@@ -43,7 +42,6 @@ const UserInfo = () => {
 
             if (data.imageUrl) {
                 setCurrUser({ ...currUser, pic: data.imageUrl });
-                console.log(data.imageUrl);
             } else {
                 setError(data.error || 'Error uploading image');
             }
@@ -62,7 +60,6 @@ const UserInfo = () => {
                     Authorization: `Bearer ${user.token}`
                 },
             };
-            console.log(currUser.imageUrl);
             const { data } = await axios.put('/api/user/update', {
                 name: currUser.name,
                 email: currUser.email,

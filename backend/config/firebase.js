@@ -11,7 +11,6 @@ const firebaseConfig = {
     messagingSenderId: process.env.messagingSenderId,
     appId:  process.env.appId,
 };
-console.log(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 if (storage) {

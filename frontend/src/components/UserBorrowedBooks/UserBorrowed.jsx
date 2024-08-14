@@ -49,7 +49,6 @@ const UserBorrowed = () => {
             }
         }
         const {data} = await axios.post('/api/book/returnReq/',{isbnid},config);
-        console.log(data);
         if(data.message === 'return request updated successfully'){
             toast({
                 title: 'Return Request Sent',

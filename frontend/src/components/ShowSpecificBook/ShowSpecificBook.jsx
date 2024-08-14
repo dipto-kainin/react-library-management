@@ -19,11 +19,17 @@ function ShowSpecificBook() {
                 const response = await axios.get(`/api/book/fetchBook/${isbnPre}`);
                 setBook(response.data.data[0]);
             } catch (err) {
-                console.log(err);
+                toast({
+                    title: 'Error',
+                    description: 'Error fetching book data',
+                    status: 'error',
+                    duration: 2000,
+                    isClosable:true,
+                })
             }
         };
         fetchBooks();
-    },[isbnPre]);
+    },[isbnPre, toast]);
 
     const handleBorrowReq = ()=>{
         const config = {
@@ -34,7 +40,6 @@ function ShowSpecificBook() {
         }
         axios.post(`/api/book/borrowReq`,{isbnPre},config)
         .then(res=>{
-            console.log(res);
             toast({
                 title: res.data.message,
                 status: "success",
