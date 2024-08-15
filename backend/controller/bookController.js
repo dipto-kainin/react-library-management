@@ -300,9 +300,6 @@ const borrowReqAccept = expressAsyncHandler(async (req, res) => {
             res.status(404);
             throw new Error("User not found");
         }
-        
-
-
         if(!book){
             res.status(404);
             throw new Error("Book not found");
