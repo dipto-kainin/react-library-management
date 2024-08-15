@@ -102,7 +102,7 @@ const Signin = () => {
                             <button className='Btn' type="submit">Log In</button>
                             <h4 style={{ fontSize: '1em' }}>Not registered yet? <Link to="/signup" style={{ color: 'turquoise' }}><b>Sign up</b></Link></h4>
                             <br />
-                            <h4 style={{ fontSize: '1em' }}>Forgot password?<text onClick={()=>handleforgot()} style={{ color: 'turquoise',fontWeight:600, cursor:'pointer' }}>Login</text></h4>
+                            <h4 style={{ fontSize: '1em' }}>Forgot password?<text onClick={()=>handleforgot()} style={{ color: 'turquoise',fontWeight:600, cursor:'pointer' }}>Reset Password</text></h4>
                         </form>
                     </div>
                 </div>
