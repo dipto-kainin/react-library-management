@@ -220,7 +220,7 @@ const borrowReq = expressAsyncHandler(async (req, res) => {
             console.log(availableCopy);
             if (!availableCopy) {
 
-                return res.status(404).json({ message: "No available copies found" });
+                return res.status(201).json({ message: "No available copies found" });
             }
             book.borrowReq.push(req.user._id);
             await book.save();
