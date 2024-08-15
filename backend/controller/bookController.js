@@ -218,12 +218,9 @@ const borrowReq = expressAsyncHandler(async(req,res)=>{
 
             const availableCopy = book.isbn.find(copy => !copy.borrowedBy)
             console.log(availableCopy);
-            
-            
-        if (!availableCopy) {
-            
-            return res.status(404).json({ message: "No available copies found" });
-        }
+            if (!availableCopy) {
+                return res.status(404).json({ message: "No available copies found" });
+            }
             book.borrowReq.push(req.user._id);
             await book.save();
             res.status(200).json({
@@ -303,24 +300,15 @@ const borrowReqAccept = expressAsyncHandler(async(req,res)=>{
             res.status(404);
             throw new Error("User not found");
         }
-        console.log("Hi!");
-        
         if(!book){
             res.status(404);
             throw new Error("Book not found");
         }
-        console.log("hi3");
-        
         const availableCopy = book.isbn.find(copy => !copy.borrowedBy)
-        console.log("Hi4");
-        
         if (!availableCopy) {
-            console.log("Hi5");
-            
             return res.status(404).json({ message: "No available copies found" });
         }
         console.log("Hi2");
-        
         const borrowRequestIndex = book.borrowReq.indexOf(user._id);
         if (borrowRequestIndex === -1) {
             return res.status(404).json({ message: "Borrow request not found" });
