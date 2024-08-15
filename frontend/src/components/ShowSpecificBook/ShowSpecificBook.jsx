@@ -57,6 +57,7 @@ function ShowSpecificBook() {
                     duration: 2000,
                     isClosable: true,
                 });
+                nav('/home/1');
             }
         }catch(err){
             toast({
