@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import './UserDetailsSearch.css'
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
