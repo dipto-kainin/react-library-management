@@ -31,23 +31,42 @@ function ShowSpecificBook() {
         fetchBooks();
     },[isbnPre, toast]);
 
-    const handleBorrowReq = ()=>{
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user.token}`
-            },
-        }
-        axios.post(`/api/book/borrowReq`,{isbnPre},config)
-        .then(res=>{
-            toast({
-                title: res.data.message,
+    const handleBorrowReq = async ()=>{
+        try{
+                const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
+                },
+            }
+            const res = await axios.post(`/api/book/borrowReq`,{isbnPre},config);
+            const {data} = res;
+            if(res.status === 200){
+                toast({
+                title: data.message,
                 status: "success",
+                    duration: 2000,
+                    isClosable: true,
+                });
+                nav('/home/1');
+            }
+            else{
+                toast({
+                title: data.message,
+                status: "error",
+                    duration: 2000,
+                    isClosable: true,
+                });
+            }
+        }catch(err){
+            toast({
+                title: 'Error',
+                description: 'Error borrowing book',
+                status: 'error',
                 duration: 2000,
-                isClosable: true,
-            });
-            nav('/home/1');
-        });
+                isClosable:true,
+            })
+        }
     }
 
     return (
