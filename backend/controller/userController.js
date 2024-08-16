@@ -177,7 +177,11 @@ const userBorrowedBook = expressAsyncHandler(async (req, res) => {
             }
             const borrowedBooks = await Promise.all(userBorrowed.map(async (isbnid) => {
                 const isbnPre = isbnid.split("-")[0];
+                
+                
                 const book = await Book.findOne({ isbnPre }).select("-isbn -borrowReq -returnReq");
+                
+                
                 return {
                     isbnPre: book.isbnPre,
                     title: book.title,
@@ -218,7 +222,11 @@ const userDetailsSearch = expressAsyncHandler(async (req, res) => {
 
             const borrowedBooks = await Promise.all(userBorrowed.map(async (isbnid) => {
                 const isbnPre = isbnid.split("-")[0];
+                
+                
                 const book = await Book.findOne({ isbnPre }).select("-isbn -borrowReq -returnReq");
+                
+                
                 return res.status(200).json({ data: user, borrwedBooks: book });
 
             }));

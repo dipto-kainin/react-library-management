@@ -17,8 +17,8 @@ const AdminPortal = () => {
           alignContent={"center"}
         >
           <TabList>
-            <Tab textColor="aqua">Tab 1</Tab>
-            <Tab textColor="aqua">tab 2</Tab>
+            <Tab textColor="aqua">Borrow request list</Tab>
+            <Tab textColor="aqua">Return request list</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>

@@ -258,7 +258,9 @@
   font-size: 1em;
   font-weight: 700;
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
 }
 
 .appli-list .cards .card p.second-text {
@@ -266,22 +268,11 @@
 }
 
 
-.appli-list .cards .btn-red{
-    padding: 10px 10px;
-    text-transform: uppercase;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    /* color: #ffffff80; */
-    text-shadow: none;
-    background: transparent;
-    cursor: pointer;
-    box-shadow: transparent;
-    border: 1px solid #ffffff80;
-    transition: 0.5s ease;
-    user-select: none;
-    color: rgb(255, 255, 255);
-    background-color: rgb(200, 16, 16);
-    border: 1px solid rgb(255, 255, 255);
-    size: 15px;
+
+.c{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(8px);
 }
+

@@ -41,14 +41,16 @@ const UserBorrowed = () => {
         if (!hasFetched)
             fetchReturnReqList();
     });
-    const handleReqAccept=(index,email,isbnPre)=>{
+    const handleReqAccept=async(index,email,isbnPre)=>{
         const config = {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${user.token}`
             }
         }
-        const { data } = axios.post(`/api/book/returnBook`,{email,isbnPre},config);
+        const { data } = await axios.post(`/api/book/returnBook`,{email,isbnPre},config);
+        console.log(data);
+        
         if (data.message==="Book returned successfully") {
             alert("User has borrowed the book for: "+data.returned+" days");
             setReturnReqBooks(returnReqBooks.filter((_, i) => i!==index))

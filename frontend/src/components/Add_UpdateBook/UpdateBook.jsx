@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import './Add_UpdateBook.css'
-import { Container, Textarea, useToast } from '@chakra-ui/react';
+import { Container, Textarea, useToast, Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { AuthContext } from '../../context/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -8,84 +8,82 @@ import { MdDelete } from "react-icons/md";
 
 function Update() {
     const { user } = useContext(AuthContext);
-    const {isbnPre} = useParams()
+    const { isbnPre } = useParams()
     const [currBook, setCurrBook] = useState();
     const [error, setError] = useState(null);
     const toast = useToast();
-    const navigate=useNavigate();
-    const [hasFetched,setHasFetched] = useState(false);
+    const navigate = useNavigate();
+    const [hasFetched, setHasFetched] = useState(false);
 
-    useEffect(()=>{
-        async function bookdata (){
-            try{
+    useEffect(() => {
+        async function bookdata() {
+            try {
                 const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${user.token}`
+                    }
                 }
-                }
-                const {data} = await axios.get(`/api/book/adminFetchBook/${isbnPre}`,config);
-                if(data.error){
+                const { data } = await axios.get(`/api/book/adminFetchBook/${isbnPre}`, config);
+                if (data.error) {
                     toast({
                         title: 'Error',
                         description: data.error,
                         status: 'error',
                         duration: 2000,
-                        isClosable:true
+                        isClosable: true
                     });
                 }
-                else{
+                else {
                     setCurrBook(data.data[0]);
                 }
                 setHasFetched(true);
-            }catch(err){
+            } catch (err) {
                 toast({
                     title: 'Error',
                     description: err.message,
                     status: 'error',
                     duration: 2000,
-                    isClosable:true
+                    isClosable: true
                 })
             }
         }
-        if(!hasFetched)
+        if (!hasFetched)
             bookdata();
     })
 
 
-    const handleBack=(e)=>{
+    const handleBack = (e) => {
         e.preventDefault();
         navigate('/allBooks');
     }
 
-    const handleDelete=async(id, isbnPre, index)=>{
-        try{
+    const handleDelete = async (id, isbnPre, index) => {
+        try {
             const config = {
                 headers: {
-                   'Content-Type': 'application/json',
-                   Authorization: `Bearer ${user.token}`
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${user.token}`
                 }
             }
-            const response=await axios.post("/api/book/deleteSpecificCopy",{isbnPre, id}, config);
-            if(response.data.message==="Successfully deleted copy")
-            {
+            const response = await axios.post("/api/book/deleteSpecificCopy", { isbnPre, id }, config);
+            if (response.data.message === "Successfully deleted copy") {
                 toast({
                     title: `This copy is deleted successfully with id ${id}`,
-                    description:response.message,
+                    description: response.message,
                     status: 'success',
                     isClosable: true,
-                    duration:3000
+                    duration: 3000
                 });
                 window.location.reload();
             }
         }
-        catch(error)
-        {
+        catch (error) {
             toast({
-                title:'Error',
-                status:'error',
-                description : error.message,
-                isClosable:true,
+                title: 'Error',
+                status: 'error',
+                description: error.message,
+                isClosable: true,
             })
         }
     }
@@ -134,21 +132,21 @@ function Update() {
             };
 
             const { data } = await axios.post(`/api/book/updateBook`, currBook, config);
-            if(data.message==="Book details updated successfully")
+            if (data.message === "Book details updated successfully")
                 toast({
                     title: 'Book updated successfully',
-                    description:data.message,
+                    description: data.message,
                     status: 'success',
                     isClosable: true,
-                    duration:2000
+                    duration: 2000
                 });
-            else{
+            else {
                 toast({
                     title: "can not update",
-                    description:data.message,
+                    description: data.message,
                     status: 'error',
                     isClosable: true,
-                    duration:2000
+                    duration: 2000
                 });
             }
         } catch (error) {
@@ -233,7 +231,7 @@ function Update() {
                     />
                 </div>
                 <div className="button-container">
-                    <button type="button" className="button" onClick={(e)=>handleBack(e)}>Back</button>
+                    <button type="button" className="button" onClick={(e) => handleBack(e)}>Back</button>
                     <button type="submit" className="button">Update</button>
                 </div>
             </form>
@@ -246,13 +244,14 @@ function Update() {
                         {currBook &&
                             currBook.isbn.map((item, index) =>
                                 <div className="card red" key={index}>
-                                    <div>
+                                    <div className='c'>
                                         <p className="tip">{item.id}</p>
                                     </div>
-                                    <div>
-                                        <p className="tip">{item.borrowedBy?.email || "Not Borrowed"}{item.borrowedBy?.email || <button className='btn-red' onClick={()=>handleDelete(item.id, currBook.isbnPre, index)}><MdDelete/>Delete</button>}</p>
+                                    <div className='c'>
+                                        <p className="tip">{item.borrowedBy?.email || <Button leftIcon={<MdDelete />} colorScheme='pink' variant='solid' onClick={() => handleDelete(item.id, currBook.isbnPre, index)}>Delete</Button>}</p>
                                     </div>
-                                    <div>
+                                    
+                                    <div className='c'>
                                         <p className="tip">{item.borrowedAt || "Not Borrowed yet"}</p>
                                     </div>
                                 </div>
