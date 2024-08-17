@@ -22,7 +22,7 @@ if(process.env.NODE_ENV){
     })
 }else{
     app.get('/',(req,res)=>{
-        res.send('Server is running...')
+        res.send('Server is running well...')
     })
 }
 
