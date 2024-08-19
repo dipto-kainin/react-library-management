@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Container, Table, Tbody, Td, Text, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
+import { Box, Container, Table, Tbody, Td, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
 import { AuthContext } from '../../context/UserContext';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
@@ -98,14 +98,7 @@ const UserBorrowed = () => {
                         display="flex"
                         flexDirection="column"
                     >
-                        <Text
-                            fontSize="2xl"
-                            fontWeight="bold"
-                            textAlign="center"
-                        >
-                            Books Return Request
-                        </Text>
-                        <Table variant="simple">
+		    {returnReqBooks.length!==0 && <Table variant="simple">
                             <Thead>
                                 <Tr >
                                     <Th textColor="white" fontSize="medium">Title</Th>
@@ -136,7 +129,7 @@ const UserBorrowed = () => {
                                     </Tr>
                                 ))}
                             </Tbody>
-                        </Table>
+                        </Table>}
                     </Box>
                 </Container>
             ) : (
