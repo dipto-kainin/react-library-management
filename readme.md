@@ -69,20 +69,21 @@ Located in the `backend` directory, this part of the project is built with Node.
 3. Set up environment variables:
     - Create a `.env` file in the `root` directory with the following variables:
     ```
-       PORT
-       FRONTEND
-       MONGO_URI
-       JWT_SECRET
-       JWT_EXPIRES_IN
-       EMAIL
-       PASSWORD
-       apiKey
-       authDomain
-       projectId
-       storageBucket
-       messagingSenderId
-       appId
-       NODE_ENV
+        PORT=your_port_number
+        FRONTEND=your_frontend_url
+        MONGO_URI=your_mongodb_uri
+        JWT_SECRET=your_jwt_secret
+        JWT_EXPIRES_IN=your_jwt_expiration_time
+        EMAIL=your_email
+        PASSWORD=your_email_password
+        apiKey=your_firebase_api_key
+        authDomain=your_firebase_auth_domain
+        projectId=your_firebase_project_id
+        storageBucket=your_firebase_storage_bucket
+        messagingSenderId=your_firebase_messaging_sender_id
+        appId=your_firebase_app_id
+        NODE_ENV=your_node_environment
+
     ```
 
 ## Usage
