@@ -75,7 +75,7 @@ Located in the `backend` directory, this part of the project is built with Node.
         JWT_SECRET=your_jwt_secret
         JWT_EXPIRES_IN=your_jwt_expiration_time
         EMAIL=your_email
-        PASSWORD=your_email_password
+        PASSWORD=your_email_password(app password not actual password)
         apiKey=your_firebase_api_key
         authDomain=your_firebase_auth_domain
         projectId=your_firebase_project_id
