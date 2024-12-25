@@ -1,10 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Box, Container, Table, Tbody, Td, Thead, Th, Tr, Image, useToast} from '@chakra-ui/react';
-import { AuthContext } from '../../context/UserContext';
-import axios from 'axios';
-import Loader from '../Loader/Loader';
-
-
+import React, { useContext, useEffect, useState } from "react";
+import {
+    Box,
+    Container,
+    Table,
+    Tbody,
+    Td,
+    Thead,
+    Th,
+    Tr,
+    Image,
+    useToast,
+} from "@chakra-ui/react";
+import { AuthContext } from "../../context/UserContext";
+import axios from "axios";
+import Loader from "../Loader/Loader";
 
 const UserBorrowed = () => {
     const { user } = useContext(AuthContext);
@@ -18,10 +27,10 @@ const UserBorrowed = () => {
             setLoading(true);
             const config = {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`
-                }
-            }
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
             const { data } = await axios.get(`/api/book/returnReqList`, config);
             setHasFetched(true);
             setLoading(false);
@@ -29,61 +38,65 @@ const UserBorrowed = () => {
                 setReturnReqBooks(data);
             } else {
                 toast({
-                    title: 'No request',
+                    title: "No request",
                     description: data.message,
-                    status: 'success',
+                    status: "success",
                     duration: 5000,
                     isClosable: true,
                 });
                 setReturnReqBooks([]);
             }
         }
-        if (!hasFetched)
-            fetchReturnReqList();
+        if (!hasFetched) fetchReturnReqList();
     });
-    const handleReqAccept=async(index,email,isbnPre)=>{
+    const handleReqAccept = async (index, email, isbnPre) => {
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user.token}`
-            }
-        }
-        const { data } = await axios.post(`/api/book/returnBook`,{email,isbnPre},config);
-        console.log(data);
-        
-        if (data.message==="Book returned successfully") {
-            alert("User has borrowed the book for: "+data.returned+" days");
-            setReturnReqBooks(returnReqBooks.filter((_, i) => i!==index))
-        }
-        else{
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+        const { data } = await axios.post(
+            `/api/book/returnBook`,
+            { email, isbnPre },
+            config
+        );
+
+        if (data.message === "Book returned successfully") {
+            alert("User has borrowed the book for: " + data.returned + " days");
+            setReturnReqBooks(returnReqBooks.filter((_, i) => i !== index));
+        } else {
             alert(data.message);
         }
-    }
-    const handleReqCancel =async (isbnPre,userid)=>{
+    };
+    const handleReqCancel = async (isbnPre, userid) => {
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${user.token}`
-            }
-        }
-        const {data} =await axios.post(`/api/book/returnReqCancel`,{userid,isbnPre},config);
-        if (data.message==="return request cancelled successfully") {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+        };
+        const { data } = await axios.post(
+            `/api/book/returnReqCancel`,
+            { userid, isbnPre },
+            config
+        );
+        if (data.message === "return request cancelled successfully") {
             toast({
-                title: 'Request Cancelled',
+                title: "Request Cancelled",
                 description: data.message,
-                status: 'success',
+                status: "success",
                 duration: 2000,
-            })
-        }
-        else{
+            });
+        } else {
             toast({
-                title: 'Error',
+                title: "Error",
                 description: data.message,
-                status: 'error',
+                status: "error",
                 duration: 2000,
             });
         }
-    }
+    };
     return (
         <>
             {!loading ? (
@@ -91,45 +104,97 @@ const UserBorrowed = () => {
                     <Box
                         bg="rgba(0,0,0,0.1)"
                         style={{
-                            backdropFilter: "blur(15px) brightness(80%)"
+                            backdropFilter: "blur(15px) brightness(80%)",
                         }}
                         p={4}
                         borderRadius="2em"
                         display="flex"
                         flexDirection="column"
                     >
-		    {returnReqBooks.length!==0 && <Table variant="simple">
-                            <Thead>
-                                <Tr >
-                                    <Th textColor="white" fontSize="medium">Title</Th>
-                                    <Th textColor="white" fontSize="medium">Email</Th>
-                                    <Th textColor="white" fontSize="medium">Author</Th>
-                                    <Th textColor="white" fontSize="medium">isbn</Th>
-                                    <Th textColor="white" fontSize="medium">Image</Th>
-                                    <Th textColor="white" fontSize="medium" fontWeight="900" textAlign={'center'}>Decision</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {returnReqBooks?.map((book, index) => (
-                                    <Tr key={index}>
-                                        <Td>{book.title}</Td>
-                                        <Td>{book.returnReq.email}</Td>
-                                        <Td>{book.author}</Td>
-                                        <Td>{book.isbnPre}</Td>
-                                        <Td>
-                                            <Image src={book.image} alt={book.title} boxSize="50px" />
-                                        </Td>
-
-                                        <Td class="tick-cross">
-                                            <div className="but-group">
-                                                <div><button id="btn-green" onClick={()=>handleReqAccept(index,book.returnReq.email,book.isbnPre)}>Accept</button></div>
-                                                <div><button id="btn-red" onClick={()=>handleReqCancel(book.isbnPre,book.returnReq.userId)}>Cancel</button></div>
-                                            </div>
-                                        </Td>
+                        {returnReqBooks.length !== 0 && (
+                            <Table variant="simple">
+                                <Thead>
+                                    <Tr>
+                                        <Th textColor="white" fontSize="medium">
+                                            Title
+                                        </Th>
+                                        <Th textColor="white" fontSize="medium">
+                                            Email
+                                        </Th>
+                                        <Th textColor="white" fontSize="medium">
+                                            Author
+                                        </Th>
+                                        <Th textColor="white" fontSize="medium">
+                                            isbn
+                                        </Th>
+                                        <Th textColor="white" fontSize="medium">
+                                            Image
+                                        </Th>
+                                        <Th
+                                            textColor="white"
+                                            fontSize="medium"
+                                            fontWeight="900"
+                                            textAlign={"center"}
+                                        >
+                                            Decision
+                                        </Th>
                                     </Tr>
-                                ))}
-                            </Tbody>
-                        </Table>}
+                                </Thead>
+                                <Tbody>
+                                    {returnReqBooks?.map((book, index) => (
+                                        <Tr key={index}>
+                                            <Td>{book.title}</Td>
+                                            <Td>{book.returnReq.email}</Td>
+                                            <Td>{book.author}</Td>
+                                            <Td>{book.isbnPre}</Td>
+                                            <Td>
+                                                <Image
+                                                    src={book.image}
+                                                    alt={book.title}
+                                                    boxSize="50px"
+                                                />
+                                            </Td>
+
+                                            <Td class="tick-cross">
+                                                <div className="but-group">
+                                                    <div>
+                                                        <button
+                                                            id="btn-green"
+                                                            onClick={() =>
+                                                                handleReqAccept(
+                                                                    index,
+                                                                    book
+                                                                        .returnReq
+                                                                        .email,
+                                                                    book.isbnPre
+                                                                )
+                                                            }
+                                                        >
+                                                            Accept
+                                                        </button>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            id="btn-red"
+                                                            onClick={() =>
+                                                                handleReqCancel(
+                                                                    book.isbnPre,
+                                                                    book
+                                                                        .returnReq
+                                                                        .userId
+                                                                )
+                                                            }
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </Td>
+                                        </Tr>
+                                    ))}
+                                </Tbody>
+                            </Table>
+                        )}
                     </Box>
                 </Container>
             ) : (
