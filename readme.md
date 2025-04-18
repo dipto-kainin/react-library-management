@@ -130,6 +130,12 @@ Located in the `backend` directory, this part of the project is built with Node.
 -   **Authentication**: Firebase
 -   **Others**: JWT, CSS
 
+## Test login 
+website test login 
+
+-    **admin** : kaininhop@gmail.com ( 123456 )
+-    **user** : resgister as you like
+
 ## Contributing
 
 Contributions are welcome! Please create an issue or submit a pull request for any enhancements or bug fixes.
